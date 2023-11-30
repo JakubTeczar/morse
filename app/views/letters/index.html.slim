@@ -1,0 +1,11 @@
+p style="color: green" = notice
+
+h1 Letters
+
+#letters
+  - @letters.each do |letter|
+    == render letter
+    p
+      = link_to "Show this letter", letter
+
+= link_to "New letter", new_letter_path

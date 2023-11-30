@@ -1,0 +1,10 @@
+h1 Editing letter
+
+== render "form", letter: @letter
+
+br
+
+div
+  => link_to "Show this letter", @letter
+  '|
+  =< link_to "Back to letters", letters_path

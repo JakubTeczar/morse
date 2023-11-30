@@ -1,0 +1,18 @@
+= form_with(model: letter) do |form|
+  - if letter.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(letter.errors.count, "error")} prohibited this letter from being saved:"
+      ul
+        - letter.errors.each do |error|
+          li = error.full_message
+
+  div
+    = form.label :letter, style: "display: block"
+    = form.text_field :letter
+
+  div
+    = form.label :morse_code, style: "display: block"
+    = form.text_field :morse_code
+
+  div
+    = form.submit
