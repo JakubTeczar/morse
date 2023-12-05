@@ -1,0 +1,13 @@
+nav.navbar.navbar-expand-lg.me-auto
+  .container-fluid
+    .fs-2.navbar-brand MorseCode
+    button.navbar-toggler type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse id="navbarTogglerDemo02"
+      ul.navbar-nav.ms-auto.mb-2.mb-lg-0.fs-4
+        li.nav-item
+          = link_to "Letters", letters_path , class: "nav-link active"
+        li.nav-item
+          = link_to "Learn", learn_letters_path , class: "nav-link active"
+          
+hr.border.border-black.border-1.opacity-50.mt-0

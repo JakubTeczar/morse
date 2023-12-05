@@ -10,6 +10,16 @@ class LettersController < ApplicationController
   def show
   end
 
+  def learn
+    @letter = Letter.order("RANDOM()").first
+    
+    respond_to do |format|
+      format.html
+      format.json { render json: { letter: @letter.letter } }
+      format.js
+    end
+  end
+
   # GET /letters/new
   def new
     @letter = Letter.new

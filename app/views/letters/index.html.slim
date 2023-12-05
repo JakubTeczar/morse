@@ -1,11 +1,15 @@
+
 p style="color: green" = notice
 
-h1 Letters
+
+h1.text-center.mt-2.mb-4 Letters
+
 
 #letters
-  - @letters.each do |letter|
-    == render letter
-    p
-      = link_to "Show this letter", letter
+  .row.row-cols-1.row-cols-sm-2.row-cols-md-3.row-cols-xl-6.g-3
+    - @letters.each do |letter|
+      .col
+        == render letter
 
-= link_to "New letter", new_letter_path
+  = link_to "New letter", new_letter_path
+  

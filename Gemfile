@@ -26,6 +26,8 @@ group :test do
 end
 
 #Added gems
+gem 'sass-rails', '~> 6.0'
+gem 'bootstrap', '~> 5.3', '>= 5.3.2'
 gem 'simple_form', '~> 5.3'
 gem 'slim', '~> 5.2'
 gem 'slim-rails', '~> 3.6', '>= 3.6.3'

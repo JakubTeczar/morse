@@ -13,3 +13,36 @@
  *= require_tree .
  *= require_self
  */
+
+@import "bootstrap"
+
+
+.learn-card
+    width: 14rem
+    height: 20rem
+    margin: 0 auto
+    user-select: none
+    &:hover
+        cursor: pointer
+    .letter
+        display: block
+    .morse-code
+        display: none
+.flip
+    .letter
+        display: none
+    .morse-code
+        display: block
+.card-letters
+    height: 18rem
+    box-shadow: 0 .5rem 1rem rgba(2, 2, 0, 0.403)
+    .btn-primary
+        background: #1e82d9
+        &:hover
+            background: #205788  
+    .btns
+        padding: 0 .3em
+        button
+            font-weight: 500
+            border-width: 2px
+            border-radius: .3rem

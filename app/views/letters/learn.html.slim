@@ -1,0 +1,10 @@
+h1.text-center.mt-2.mb-4 Learn
+
+.div.mt-1
+    .card.fs-1.learn-card.d-flex.justify-content-center.align-items-center
+        .letter
+            =< @letter.letter
+        .morse-code
+            =< @letter.morse_code
+
+    button.btn.fs-5.mx-auto.mt-2.btn-primary.button#refresh-button style="display:block" Next letter
