@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }else{
             this.classList.toggle("flip");
-        }
+        }g
     })
 });
   
