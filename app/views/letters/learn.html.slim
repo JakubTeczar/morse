@@ -6,5 +6,10 @@ h1.text-center.mt-2.mb-4 Learn
             =< @letter.letter
         .morse-code
             =< @letter.morse_code
-
-    button.btn.fs-5.mx-auto.mt-2.btn-primary.button#refresh-button style="display:block" Next letter
+    
+div.d-flex.select-laarn-type.mx-auto
+    p Learn mode:
+    select.form-select.mt-2 aria-label="Learn mode"
+        option value="text" Text
+        option value="light" Light
+        option value="sound" Sound
