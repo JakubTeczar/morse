@@ -12,6 +12,7 @@ class LettersController < ApplicationController
 
   def learn
     @letter = Letter.order("RANDOM()").first
+    @mode = params[:mode]
     
     respond_to do |format|
       format.html

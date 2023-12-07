@@ -1,15 +1,23 @@
 h1.text-center.mt-2.mb-4 Learn
 
-.div.mt-1
-    .card.fs-1.learn-card.d-flex.justify-content-center.align-items-center
+
+
+.div.mt-1 style="position: relative"
+    .card.fs-1.d-flex.justify-content-center.align-items-center.learn-card
         .letter
             =< @letter.letter
-        .morse-code
-            =< @letter.morse_code
+        .morse-code(data-mode="#{@mode}" data-code="#{@letter.morse_code}")
+            .light
+                .bulb
+            .speaker    
+    .backdrop
     
-div.d-flex.select-laarn-type.mx-auto
-    p Learn mode:
-    select.form-select.mt-2 aria-label="Learn mode"
-        option value="text" Text
-        option value="light" Light
-        option value="sound" Sound
+    
+div.d-flex.select-laarn-type.mx-auto.fs-5.mt-3.gap-2
+    div Learn mode:
+    = link_to "Text", learn_letters_path(mode: "text") , class: "link fs-6"+ (@mode == "text" ? " active-link" : "")
+    = link_to "Light", learn_letters_path(mode: "light") , class: "link fs-6"+ (@mode == "light" ? " active-link" : "")
+    = link_to "Sound", learn_letters_path(mode: "sound") , class: "link fs-6"+ (@mode == "sound" ? " active-link" : "")
+
+
+
