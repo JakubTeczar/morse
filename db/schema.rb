@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_29_184202) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_12_000713) do
   create_table "letters", force: :cascade do |t|
     t.string "letter"
+    t.string "morse_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "words", force: :cascade do |t|
+    t.string "word"
     t.string "morse_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

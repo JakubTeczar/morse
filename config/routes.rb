@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :words
   get "up" => "rails/health#show", as: :rails_health_check
   resources :letters do
     collection do

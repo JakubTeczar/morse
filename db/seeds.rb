@@ -1,4 +1,5 @@
 Letter.destroy_all
+Word.destroy_all
 
 Letter.create!([
   {
@@ -217,4 +218,29 @@ Letter.create!([
     letter: "@",
     morse_code: ".--.-."
   }
+])
+
+Word.create!([
+  { word: "hello" },
+  { word: "world" },
+  { word: "time" },
+  { word: "year" },
+  { word: "people" },
+  { word: "way" },
+  { word: "day" },
+  { word: "man" },
+  { word: "thing" },
+  { word: "woman" },
+  { word: "life" },
+  { word: "child" },
+  { word: "world" },
+  { word: "school" },
+  { word: "state" },
+  { word: "family" },
+  { word: "student" },
+  { word: "group" },
+  { word: "country" },
+  { word: "problem" },
+  { word: "hand" },
+  { word: "part" }
 ])
