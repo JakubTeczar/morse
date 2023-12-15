@@ -3,7 +3,8 @@ let setTimeoutID;
 let instructions = [];
 let oscillator;
 let soundPlay =false;
-
+let reverse;
+let audioContext;
 function executeInstruction([time, action]) {
     return new Promise((resolve) => {
         const bulb = document.querySelector(".learn-card .morse-code .bulb");
@@ -11,7 +12,7 @@ function executeInstruction([time, action]) {
         if(action == "light"){
             bulb.classList.add("bulb-on");
         }else if(action=="sound"){
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
             oscillator = audioContext.createOscillator();
             oscillator.connect(audioContext.destination);
             const frequency = 800;
@@ -43,53 +44,78 @@ function processInstructions(index, instructions) {
     }
 }
 
+function createInstruction(){
+    const morseCode = document.querySelector(".learn-card .morse-code");
+    const code = morseCode.dataset.code.split('')
+    const mode = morseCode.dataset.mode;
+    !reverse && document.querySelector(".learn-card").classList.toggle("flip");
+
+    let delay = 200; // start delay
+    const signalLen = 300; //signal length
+
+    if(mode === "text"){
+        morseCode.textContent = morseCode.dataset.code;
+    }else{
+        instructions.push([delay,"break"]);
+
+        code.forEach((char) => {
+            const signal = char === "." ? signalLen : signalLen*3;
+            instructions.push([signal,mode],[signalLen,"break"]);
+        }); 
+        console.log(code,instructions);
+
+        instructions.pop();
+        processInstructions(0, instructions);
+    }
+}
+function loadNewLetter(){
+    Rails.ajax({
+    type: 'GET',
+    url: '/letters/learn',
+    dataType: 'script',
+    success: function(data) {
+        console.log('Success:', data);
+        if(reverse){
+            document.querySelector(".learn-card").classList.toggle("flip");
+            createInstruction();
+        }else{
+             restart();
+        }
+    },
+    error: function() {
+        console.log('Error: Unable to refresh letter.');
+    }
+    });
+}
+
+function restart(){
+    document.querySelector(".learn-card").classList.toggle("flip");
+    const bulb =document.querySelector(".learn-card .morse-code .bulb");
+    bulb && bulb.classList.remove("bulb-on");
+
+    clearTimeout(setTimeoutID);
+    soundPlay && oscillator.stop();
+    instructions=[];
+}
 document.addEventListener('DOMContentLoaded', function() {
+
+    reverse= document.querySelector(".learn-card .morse-code").dataset.reverse;
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if(reverse=="true"){
+        console.log(audioContext,reverse);
+        createInstruction();
+    }
     document.querySelector(".learn-card").addEventListener("click",function(){
         ++click;
         if(click%2==0){
-            Rails.ajax({
-            type: 'GET',
-            url: '/letters/learn',
-            dataType: 'script',
-            success: function(data) {
-                console.log('Success:', data);
-            },
-            error: function() {
-                console.log('Error: Unable to refresh letter.');
-            }
-            });
-
-            const bulb =document.querySelector(".learn-card .morse-code .bulb");
-            bulb && bulb.classList.remove("bulb-on");
-    
-            clearTimeout(setTimeoutID);
-            soundPlay && oscillator.stop();
-            instructions=[];
-
+            loadNewLetter();
         }else{
-            const morseCode = document.querySelector(".learn-card .morse-code");
-            const code = morseCode.dataset.code.split('')
-            const mode = morseCode.dataset.mode;
-            this.classList.toggle("flip");
-
-            let delay = 200; // start delay
-            const signalLen = 300; //signal length
-
-            if(mode === "text"){
-                morseCode.textContent = morseCode.dataset.code;
+            if(reverse=="true"){
+                restart();
             }else{
-                document.querySelector(mode === "light" ? ".speaker" : ".light").style.display = "none";
-                instructions.push([delay,"break"]);
-
-                code.forEach((char) => {
-                    const signal = char === "." ? signalLen : signalLen*3;
-                    instructions.push([signal,mode],[signalLen,"break"]);
-                }); 
-                console.log(code,instructions);
-
-                instructions.pop();
-                processInstructions(0, instructions);
+                createInstruction();
             }
+
         }
     })
 });

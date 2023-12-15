@@ -1,0 +1,8 @@
+
+h1.text-center All users
+hr
+.fs-5
+  - @users.each do |user|
+    div.mb-3
+      = "#{user.email} #{user.email} #{user.role}"
+    hr  
