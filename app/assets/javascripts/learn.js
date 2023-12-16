@@ -5,10 +5,15 @@ let oscillator;
 let soundPlay =false;
 let reverse;
 let audioContext;
+
 function executeInstruction([time, action]) {
     return new Promise((resolve) => {
         const bulb = document.querySelector(".learn-card .morse-code .bulb");
-    
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if(audioContext.state=="suspended"){
+            console.log("dupa");
+        }
+        console.log(audioContext);
         if(action == "light"){
             bulb.classList.add("bulb-on");
         }else if(action=="sound"){
@@ -98,25 +103,27 @@ function restart(){
     instructions=[];
 }
 document.addEventListener('DOMContentLoaded', function() {
-
     reverse= document.querySelector(".learn-card .morse-code").dataset.reverse;
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    if(reverse=="true"){
-        console.log(audioContext,reverse);
-        createInstruction();
+    reverse = reverse =="true" ? true : false;
+    if(reverse){    
+        createInstruction(); 
     }
-    document.querySelector(".learn-card").addEventListener("click",function(){
-        ++click;
-        if(click%2==0){
-            loadNewLetter();
+    document.querySelector(".learn-card").addEventListener("click",function(event){
+        if(event.target.className.split(" ").includes('switch-rev')){
         }else{
-            if(reverse=="true"){
-                restart();
+            ++click;
+            if(click%2==0){
+                loadNewLetter();
             }else{
-                createInstruction();
-            }
-
+                if(reverse){
+                    restart();
+                }else{
+                    createInstruction();
+                }
+    
+            } 
         }
+
     })
 });
 
