@@ -1,10 +1,6 @@
 class UsersController < ApplicationController
-  
+  load_and_authorize_resource
   def index
-    if user_signed_in? && current_user.role == "admin"
-      @users = User.all
-    else
-      @users = []
-    end
+    @users = User.all
   end
 end

@@ -22,7 +22,7 @@ function executeInstruction([time, action]) {
 
             oscillator = audioContext.createOscillator();
             oscillator.connect(audioContext.destination);
-            const frequency = 800;
+            const frequency = 440;
             oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
             oscillator.type = 'sine';
             soundPlay= true;
@@ -108,37 +108,36 @@ function restart(){
     soundPlay && oscillator.stop();
     instructions=[];
 }
+
 document.addEventListener('DOMContentLoaded', function() {
- 
+    const noBtn = document.querySelector("#no");
+    const yesBtn = document.querySelector("#yes");
+    const flipBtn = document.querySelector("#flip");
+    const controls = document.querySelector(".controls")
+
     reverse= document.querySelector(".learn-card .morse-code").dataset.reverse;
     reverse = reverse =="true" ? true : false;
-    const promptBox = document.querySelector(".prompt");
     mode = document.querySelector(".learn-card .morse-code").dataset.mode;
 
-    if(reverse && mode != 'text' && click===0 && reverse){
-        promptBox.style.display = "block";
+    if(mode != 'text' && click===0 && reverse){
+        flipBtn.textContent = "Start";
     }
-    promptBox.querySelector("button").addEventListener("click",()=>{
-        createInstruction(); 
-        promptBox.style.display = "none";
-        console.log(click);
-    });
 
-    document.querySelector(".learn-card").addEventListener("click",function(event){
-        if(click === 0 && reverse && mode !== "text"){ 
-            if(event.target.id === "confirm-btn"){
-                ++click; 
-            }
+    flipBtn.addEventListener("click",()=>{
+        if(mode != 'text' && click===0 && reverse){
+            createInstruction(); 
+            ++click; 
+            flipBtn.textContent = "Flip card";
         }else{
             if(mode !== "text" && click === 1 && firstClick && reverse){
                 firstClick = false;
-                console.log("click222");
             }else{
                 ++click;
             }
             if(click%2==0){
-                loadNewLetter();
+                // loadNewLetter();
             }else{
+                controls.classList.add("show-con");
                 if(mode === "text"){
                     createInstruction();
                 }else{
@@ -150,8 +149,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-        console.log(click);
     });
     
+    function checkAnswear(answear){
+        ++click;
+        controls.classList.remove("show-con");
+        loadNewLetter();
+    }
+    yesBtn.addEventListener("click",()=>{
+        checkAnswear(true);
+    });
+    noBtn.addEventListener("click",()=>{
+        checkAnswear(false);
+    });
 });
 

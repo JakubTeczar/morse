@@ -16,18 +16,25 @@
 
 @import "bootstrap"
 
-
+.learn-card , .bottom-panel
+    width: 45rem
+.bottom-panel
+    justify-content: space-between !important
+    padding: 0 .5em
 .learn-card
-    width: 17rem
-    height: 24rem
+    height: 28rem
     margin: 0 auto
     user-select: none
+    border: none
+    box-shadow: 0px 0px 10px rgba(2, 2, 2, 0.303)
     &:hover
         cursor: pointer
     .letter
         display: block
+        margin-bottom: 1.7em
     .morse-code
         display: none
+        margin-bottom: 1.7em
 .flip
     .letter
         display: none
@@ -65,13 +72,14 @@ a
 
 .light, .speaker
     width: 100%
-    height: calc( 100% - 3.6rem )
+    height: calc( 100% - 6rem )
     border-radius: 10%
     position: absolute
     background-image: url('tower.png')
-    background-size: cover
+    background-size: contain
+    background-repeat: no-repeat
     background-position: center
-    top: 0
+    top: 1.5rem
     left: 0
     .bulb
         width: 4.3rem
@@ -90,39 +98,59 @@ a
             background: red
             content: ""
             height: 2rem
-.prompt 
-    display: none
-    background: rgba(255, 255, 255, 0.724)
-    width: 100%
-    height: 100%
-    position: absolute
-    z-index: 10
-    top: 0
-    div
-        position: absolute
-        top: 50%
-        left: 50%
-        transform: translateX(-50%) translateY(-50%)
-        background: rgba(255, 255, 255, 0.863)
-        display: grid
-        gap: .5em
-        padding: .6em
-        border-radius: .2em
+
+
 .speaker
     background-image: url("megaphone.png")
     background-size: contain
     background-repeat: no-repeat
 
-.reverse
+.switch-rev
+    background-image: url("reverse.png")
+    width: 1.8rem
+    height: 1.8rem
+    background-size: 90%
+    background-repeat: no-repeat
+    background-position: center
+    align-self: flex-end
+    &:hover
+        background-size: 100%
+        cursor: pointer
+
+.controls 
+    width: 18rem
+    height: 3.1rem
     position: absolute
-    bottom: 1em
-    .switch-rev
-        background-image: url("reverse.png")
-        width: 1.8rem
-        height: 1.8rem
-        background-size: 90%
-        background-repeat: no-repeat
-        background-position: center
-        &:hover
-            background-size: 100%
-            cursor: pointer
+    bottom: .8rem
+    display: flex
+    justify-content: space-between
+    button
+        width: 45%
+        .img
+            background-size: contain
+            background-position: center
+            background-repeat: no-repeat
+            width: 100%
+            height: 83%
+        &:nth-child(1), &:nth-child(2)
+            display: none   
+        &:nth-child(1)
+            border: 2px solid #F44336
+            &:hover
+                background: #f443362a
+            .img
+                background-image: url("close.png")
+        &:nth-child(2)
+            border: 2px solid #00BA00
+            &:hover
+                background:#00ba002b
+            .img
+                height: 90%
+                background-image: url("check.png")
+    #flip
+        width: 90%
+.show-con
+    #flip
+        display: none
+    #no,#yes
+        display: block
