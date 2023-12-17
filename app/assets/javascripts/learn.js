@@ -5,6 +5,8 @@ let oscillator;
 let soundPlay =false;
 let reverse;
 let audioContext;
+let firstClick = true;
+let mode;
 
 function executeInstruction([time, action]) {
     return new Promise((resolve) => {
@@ -59,7 +61,11 @@ function createInstruction(){
     const signalLen = 300; //signal length
 
     if(mode === "text"){
-        morseCode.textContent = morseCode.dataset.code;
+        if(click % 2 === 0){
+            morseCode.textContent = reverse ? morseCode.dataset.code :morseCode.dataset.letter;
+        }else{
+            morseCode.textContent = reverse ? morseCode.dataset.letter :morseCode.dataset.code;
+        }
     }else{
         instructions.push([delay,"break"]);
 
@@ -81,11 +87,11 @@ function loadNewLetter(){
     success: function(data) {
         console.log('Success:', data);
         if(reverse){
-            document.querySelector(".learn-card").classList.toggle("flip");
             createInstruction();
         }else{
-             restart();
+            restart();
         }
+        document.querySelector(".learn-card").classList.toggle("flip");
     },
     error: function() {
         console.log('Error: Unable to refresh letter.');
@@ -103,27 +109,49 @@ function restart(){
     instructions=[];
 }
 document.addEventListener('DOMContentLoaded', function() {
+ 
     reverse= document.querySelector(".learn-card .morse-code").dataset.reverse;
     reverse = reverse =="true" ? true : false;
-    if(reverse){    
-        createInstruction(); 
+    const promptBox = document.querySelector(".prompt");
+    mode = document.querySelector(".learn-card .morse-code").dataset.mode;
+
+    if(reverse && mode != 'text' && click===0 && reverse){
+        promptBox.style.display = "block";
     }
+    promptBox.querySelector("button").addEventListener("click",()=>{
+        createInstruction(); 
+        promptBox.style.display = "none";
+        console.log(click);
+    });
+
     document.querySelector(".learn-card").addEventListener("click",function(event){
-        if(event.target.className.split(" ").includes('switch-rev')){
+        if(click === 0 && reverse && mode !== "text"){ 
+            if(event.target.id === "confirm-btn"){
+                ++click; 
+            }
         }else{
-            ++click;
+            if(mode !== "text" && click === 1 && firstClick && reverse){
+                firstClick = false;
+                console.log("click222");
+            }else{
+                ++click;
+            }
             if(click%2==0){
                 loadNewLetter();
             }else{
-                if(reverse){
-                    restart();
-                }else{
+                if(mode === "text"){
                     createInstruction();
+                }else{
+                    if(reverse){
+                        restart();
+                    }else{
+                        createInstruction();
+                    }
                 }
-    
-            } 
+            }
         }
-
-    })
+        console.log(click);
+    });
+    
 });
 

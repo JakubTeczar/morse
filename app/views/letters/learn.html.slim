@@ -5,15 +5,19 @@ h1.text-center.mt-2.mb-4 Learn
 .div.mt-1 style="position: relative"
     .card.fs-1.d-flex.justify-content-center.align-items-center.learn-card class=(@reverse == "false" ? "" : "flip")
         .letter
-            =< @letter.letter
-        .morse-code(data-mode="#{@mode}" data-reverse="#{@reverse}" data-code="#{@letter.morse_code}")
+            = @letter.letter
+        .morse-code(data-mode="#{@mode}" data-reverse="#{@reverse}" data-code="#{@letter.morse_code}" data-letter="#{@letter.letter}")
             .light style=(@mode=="light" ? "" : "display:none")
                 .bulb
             .speaker style=(@mode=="sound" ? "" : "display:none")   
+            = @letter.morse_code if @reverse=="true" && @mode == "text"
         .reverse.d-flex.fs-5.align-items-center.gap-1
-            | First display : #{@reverse=="false" ? "letter " : "code "}
+            |First display : #{@reverse == "false" ? "letter " : "code "}
             =link_to "", learn_letters_path(mode: @mode , reverse: (@reverse == "false" ? true : false)), class: "link fs-6 switch-rev"
-    
+        .prompt 
+            div 
+                |Ready?
+                button.btn.btn-primary.fs-5#confirm-btn Yes
     
 div.d-flex.select-laarn-type.mx-auto.fs-5.mt-3.gap-2
     div Learn mode:
