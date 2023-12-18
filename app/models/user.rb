@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   before_create :default_role
+  has_many :History
 
   def default_role
     self.role ||= "standard"
