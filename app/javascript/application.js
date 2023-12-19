@@ -6,3 +6,4 @@ import "jquery"
 import "jquery3"
 import "jquery_ujs"
 import "popper"
+//= require rails-ujs

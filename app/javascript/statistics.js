@@ -1,3 +1,4 @@
+//= require rails-ujs
 const myChart = document.getElementById("myChart");
 
 Chart.defaults.global.defaultFontSize = 26;
