@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   before_create :default_role
-
+  has_many :log
   def default_role
     self.role ||= "standard"
   end

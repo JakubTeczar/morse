@@ -12,11 +12,13 @@ nav.navbar.navbar-expand-lg.me-auto
         li.nav-item
           = link_to "Learn", learn_letters_path(mode: "text",reverse: "false") , class: "nav-link active"
         - if user_signed_in?
-          li.nav-item
-            = link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link active"
           - if can? :menage, @user
             li.nav-item
               = link_to "Users", users_index_path, class: "nav-link active"
+          li.nav-item
+            = link_to "Statistics", users_statistics_path, class: "nav-link active"
+          li.nav-item
+            = link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link active"
         - else
           li.nav-item
             = link_to "Sign up", new_user_registration_path(mode: "text"), class: "nav-link active"

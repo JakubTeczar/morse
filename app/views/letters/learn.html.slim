@@ -1,6 +1,6 @@
+/ - javascript_include_tag "learn" 
+
 h1.text-center.mt-2.mb-4 Learn
-
-
 
 .div.mt-1 style="position: relative"
     .card.fs-1.d-flex.justify-content-center.align-items-center.learn-card class=(@reverse == "false" ? "" : "flip")
@@ -29,5 +29,4 @@ h1.text-center.mt-2.mb-4 Learn
         = link_to "Light", learn_letters_path(mode: "light", reverse: @reverse) , class: "link fs-6"+ (@mode == "light" ? " active-link" : "")
         = link_to "Sound", learn_letters_path(mode: "sound", reverse: @reverse) , class: "link fs-6"+ (@mode == "sound" ? " active-link" : "")
 
-
-
+= javascript_include_tag "learn"

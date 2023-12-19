@@ -1,3 +1,5 @@
+//= require rails-ujs
+
 let click =0;
 let setTimeoutID;
 let instructions = [];
@@ -153,8 +155,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function checkAnswear(answear){
         ++click;
-        controls.classList.remove("show-con");
-        loadNewLetter();
+        Rails.ajax({
+            url: "/users/update_log",
+            type: "PATCH",
+            data: answear ? "data=yes" : "data=no",
+            success: function() {
+                console.log(answear ? "+1 yes" : "+1 no");
+                loadNewLetter();
+                controls.classList.remove("show-con");
+            },
+            error: function() {
+                console.log("adding yes error");
+            }
+          });
     }
     yesBtn.addEventListener("click",()=>{
         checkAnswear(true);
