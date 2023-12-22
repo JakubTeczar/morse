@@ -1,8 +1,9 @@
 h1.text-center Statistics
 
 .chart 
-    canvas#myChart width="400" height="200"
-    
+    canvas#myChart width="400" height="200" data-yes="#{@yes}" data-no="#{@no}"
+        
+     
 div.justify-content-center.d-flex.gap-2
     p.fs-3 
         | No: #{@no}

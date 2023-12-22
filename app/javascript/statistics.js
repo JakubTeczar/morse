@@ -1,18 +1,17 @@
-//= require rails-ujs
 const myChart = document.getElementById("myChart");
 
 Chart.defaults.global.defaultFontSize = 26;
 const myChartData = {
     labels: [
-        "No",
         "Yes",
+        "No",
     ],
     datasets: [
         {
-            data: [133.3, 86.2],
+            data: [ myChart.dataset.yes, myChart.dataset.no],
             backgroundColor: [
-                "#F44336",
                 "#00BA00",
+                "#F44336",
             ]
         }]
 };

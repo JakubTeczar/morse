@@ -1,4 +1,3 @@
-//= require rails-ujs
 
 let click =0;
 let setTimeoutID;
@@ -21,10 +20,9 @@ function executeInstruction([time, action]) {
         if(action == "light"){
             bulb.classList.add("bulb-on");
         }else if(action=="sound"){
-
             oscillator = audioContext.createOscillator();
             oscillator.connect(audioContext.destination);
-            const frequency = 440;
+            const frequency = time === 300 ? 570 : 450;
             oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
             oscillator.type = 'sine';
             soundPlay= true;
