@@ -13,6 +13,7 @@ class LettersController < ApplicationController
   def learn
     learn  = Learn.find_by(user_id: current_user.id)
     current_pool = learn.data["generated_pool"]
+
     @letter
     puts "learn ==#{learn.data}"
     if current_pool.blank?
@@ -23,6 +24,7 @@ class LettersController < ApplicationController
     else
     @letter = current_pool[0]
     end
+
     @mode = params[:mode]
     @reverse = params[:reverse]
     learn.save
@@ -33,6 +35,9 @@ class LettersController < ApplicationController
     inprocess = learn["inprocess"]
     pool = []
     if inprocess.blank?
+      # tutja trzeba bedzie zrobic lepszą logike
+      # dodać if który będzie sprawdzała nie tylko tabele inprocess
+      # i co jakiś czas dodawanie do powtórki tych liter które już umiałeś
       pool.push(learn.new[0],learn.new[1],learn.new[2])
       newLetters = learn.new.shift(3)
       learn.inprocess.push(*newLetters)
