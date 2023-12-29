@@ -19,10 +19,9 @@ function executeInstruction([time, action]) {
         if(action == "light"){
             bulb.classList.add("bulb-on");
         }else if(action=="sound"){
-
             oscillator = audioContext.createOscillator();
             oscillator.connect(audioContext.destination);
-            const frequency = 440;
+            const frequency = time === 300 ? 570 : 450;
             oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
             oscillator.type = 'sine';
             soundPlay= true;
@@ -82,7 +81,7 @@ function createInstruction(){
 function loadNewLetter(){
     Rails.ajax({
     type: 'GET',
-    url: '/letters/learn',
+    url: '/letters/free_learn',
     dataType: 'script',
     success: function(data) {
         console.log('Success:', data);
@@ -110,10 +109,7 @@ function restart(){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const noBtn = document.querySelector("#no");
-    const yesBtn = document.querySelector("#yes");
     const flipBtn = document.querySelector("#flip");
-    const controls = document.querySelector(".controls")
 
     reverse= document.querySelector(".learn-card .morse-code").dataset.reverse;
     reverse = reverse =="true" ? true : false;
@@ -135,9 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 ++click;
             }
             if(click%2==0){
-                // loadNewLetter();
+                loadNewLetter();
+                flipBtn.textContent = "Filp card";
             }else{
-                controls.classList.add("show-con");
+                flipBtn.textContent = "Next letter";
                 if(mode === "text"){
                     createInstruction();
                 }else{
@@ -149,18 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-    });
-    
-    function checkAnswear(answear){
-        ++click;
-        controls.classList.remove("show-con");
-        loadNewLetter();
-    }
-    yesBtn.addEventListener("click",()=>{
-        checkAnswear(true);
-    });
-    noBtn.addEventListener("click",()=>{
-        checkAnswear(false);
     });
 });
 

@@ -10,12 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_18_173710) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_28_015751) do
   create_table "histories", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "id_user"
     t.date "date"
     t.integer "yes"
     t.integer "no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "learns", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "level"
+    t.json "remind"
+    t.json "learned"
+    t.json "inprocess"
+    t.json "new"
+    t.json "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -27,13 +39,32 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_18_173710) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "logs", force: :cascade do |t|
+    t.integer "user_id"
+    t.date "date"
+    t.integer "yes"
+    t.integer "no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "learned_letters"
+  end
+
+  create_table "statistics", force: :cascade do |t|
+    t.integer "id_user"
+    t.json "all"
+    t.json "learn_days"
+    t.integer "learn_level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "role", default: "standard", null: false
+    t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -11,16 +11,53 @@ class LettersController < ApplicationController
   end
 
   def learn
+    learn  = Learn.find_by(user_id: current_user.id)
+    current_pool = learn.data["generated_pool"]
+
+    @letter
+    puts "learn ==#{learn.data}"
+    if current_pool.blank?
+      current_pool = create_learn_pool
+      learn.data["generated_pool"] = current_pool[0]
+      learn.data["current_letters"] = current_pool[1]
+      @letter = current_pool[0][0]
+    else
+    @letter = current_pool[0]
+    end
+
+    @mode = params[:mode]
+    @reverse = params[:reverse]
+    learn.save
+  end
+
+  def create_learn_pool
+    learn = Learn.find_by(user_id: current_user.id)
+    inprocess = learn["inprocess"]
+    pool = []
+    if inprocess.blank?
+      # tutja trzeba bedzie zrobic lepszą logike
+      # dodać if który będzie sprawdzała nie tylko tabele inprocess
+      # i co jakiś czas dodawanie do powtórki tych liter które już umiałeś
+      pool.push(learn.new[0],learn.new[1],learn.new[2])
+      newLetters = learn.new.shift(3)
+      learn.inprocess.push(*newLetters)
+    else
+      pool = inprocess
+    end
+    learn.save
+    p = inprocess
+    tab = []
+    tab.push(p[0],p[0],p[0],p[1],p[1],p[1],p[2],p[2],p[2],p[2]).shuffle!
+    return [tab,pool]
+  end
+
+  def free_learn
     @letter = Letter.order("RANDOM()").first
     @mode = params[:mode]
-
     @reverse = params[:reverse]
-    
-    respond_to do |format|
-      format.html
-      format.json { render json: { letter: @letter.letter } }
-      format.js
-    end
+  
+    Rails.logger.debug("Received mode: #{@mode}")
+    Rails.logger.debug("Received reverse: #{@reverse}")
   end
 
   # GET /letters/new
