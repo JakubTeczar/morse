@@ -10,12 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_21_230347) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_28_015751) do
   create_table "histories", force: :cascade do |t|
     t.integer "id_user"
     t.date "date"
     t.integer "yes"
     t.integer "no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "learns", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "level"
+    t.json "remind"
+    t.json "learned"
+    t.json "inprocess"
+    t.json "new"
+    t.json "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -34,6 +46,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_21_230347) do
     t.integer "no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "learned_letters"
   end
 
   create_table "statistics", force: :cascade do |t|

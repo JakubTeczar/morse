@@ -1,5 +1,6 @@
 
-document.querySelector('.learn-card .letter').innerHTML = '<%= j @letter.letter %>';
-document.querySelector(".learn-card .morse-code").dataset.code = '<%= j @letter.morse_code %>';
+document.querySelector('.learn-card .letter').innerHTML = '<%= j @letter["letter"] %>';
+document.querySelector(".learn-card .morse-code").dataset.code = '<%= j @letter["morse_code"] %>';
+document.querySelector(".learn-card .morse-code").dataset.letter = '<%= j @letter["letter"] %>';
 document.querySelector(".learn-card").classList.remove("flip");
 

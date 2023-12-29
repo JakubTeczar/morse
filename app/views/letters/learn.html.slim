@@ -1,16 +1,15 @@
-/ - javascript_include_tag "learn" 
 
 h1.text-center.mt-2.mb-4 Learn
 
 .div.mt-1 style="position: relative"
     .card.fs-1.d-flex.justify-content-center.align-items-center.learn-card class=(@reverse == "false" ? "" : "flip")
         .letter
-            = @letter.letter
-        .morse-code(data-mode="#{@mode}" data-reverse="#{@reverse}" data-code="#{@letter.morse_code}" data-letter="#{@letter.letter}")
+            = @letter["letter"]
+        .morse-code(data-mode="#{@mode}" data-reverse="#{@reverse}" data-code="#{@letter["morse_code"]}" data-letter="#{@letter["letter"]}")
             .light style=(@mode=="light" ? "" : "display:none")
                 .bulb
             .speaker style=(@mode=="sound" ? "" : "display:none")   
-            = @letter.morse_code if @reverse=="true" && @mode == "text"
+            = @letter["morse_code"] if @reverse=="true" && @mode == "text"
         .controls 
             button.btn#no
                 .img 
@@ -18,15 +17,4 @@ h1.text-center.mt-2.mb-4 Learn
                 .img 
             button.btn#flip.fs-4.btn-primary.mx-auto
                 |Flip card
-    
-.bottom-panel.d-flex.select-laarn-type.mx-auto.fs-5.mt-3
-    .d-flex.fs-5.align-items-center.gap-1.align-items-baseline
-        |First display: #{@reverse == "false" ? " letter " : " code "}
-        =link_to "", learn_letters_path(mode: @mode , reverse: (@reverse == "false" ? true : false)), class: "link switch-rev"
-    div.d-flex 
-        |Learn mode:
-        = link_to "Text", learn_letters_path(mode: "text", reverse: @reverse) , class: "link fs-6"+ (@mode == "text" ? " active-link" : "")
-        = link_to "Light", learn_letters_path(mode: "light", reverse: @reverse) , class: "link fs-6"+ (@mode == "light" ? " active-link" : "")
-        = link_to "Sound", learn_letters_path(mode: "sound", reverse: @reverse) , class: "link fs-6"+ (@mode == "sound" ? " active-link" : "")
-
 = javascript_include_tag "learn"

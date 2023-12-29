@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :letters do
     collection do
       get 'learn' 
+      get 'free_learn' 
     end
   end
   
