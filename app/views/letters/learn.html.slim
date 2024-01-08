@@ -1,23 +1,23 @@
 
 h1.text-center.mt-2.mb-4 Learn
 / = @current
-h4 Odstatnie tryby 
-= @hist
-h4 Wygenerowane
-div.d-flex.fs-3
-    - @gen.each do |letter|
-        div 
-            =< ". #{letter["letter"]} L:#{letter["level"]} V:#{letter["view_num"]} "
-h4 Obecne litery
-div.fs-3
-    - @cur.each do |letter|
-        div 
-            =< "- #{letter["letter"]} L:#{letter["level"]} V:#{letter["view_num"]} "
-h4 Nauczone
-div.d-flex.fs-3
-    - @learned.each do |letter|
-        div 
-            =< ". #{letter["letter"]} L:#{letter["level"]} V:#{letter["view_num"]} "
+/ h4 Odstatnie tryby 
+/ = @hist
+/ h4 Wygenerowane
+/ div.d-flex.fs-3
+/     - @gen.each do |letter|
+/         div 
+/             =< ". #{letter["letter"]} L:#{letter["level"]} V:#{letter["view_num"]} "
+/ h4 Obecne litery
+/ div.fs-3
+/     - @cur.each do |letter|
+/         div 
+/             =< "- #{letter["letter"]} L:#{letter["level"]} V:#{letter["view_num"]} "
+/ h4 Nauczone
+/ div.d-flex.fs-3
+/     - @learned.each do |letter|
+/         div 
+/             =< ". #{letter["letter"]} L:#{letter["level"]} V:#{letter["view_num"]} "
 
 .div.mt-1 style="position: relative"
     .card.fs-1.d-flex.justify-content-center.align-items-center.learn-card class=(@reverse == "false" ? "" : "flip")

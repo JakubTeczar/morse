@@ -1,24 +1,24 @@
-const myChart = document.getElementById("myChart");
+// const myChart = document.getElementById("myChart");
 
-const myChartData = {
-    labels: [
-        "Yes",
-        "No",
-    ],
-    datasets: [
-    {
-    data: [ myChart.dataset.yes, myChart.dataset.no],
-    backgroundColor: [
-        "#4bc0c0",
-        "#ff5579",
-    ]
-    }]
-};
+// const myChartData = {
+//     labels: [
+//         "Yes",
+//         "No",
+//     ],
+//     datasets: [
+//     {
+//     data: [ myChart.dataset.yes, myChart.dataset.no],
+//     backgroundColor: [
+//         "#4bc0c0",
+//         "#ff5579",
+//     ]
+//     }]
+// };
 
-const pieChart = new Chart(myChart, {
-  type: 'pie',
-  data: myChartData
-});
+// const pieChart = new Chart(myChart, {
+//   type: 'pie',
+//   data: myChartData
+// });
 
 const myChart2 = document.getElementById("myChart2");
 

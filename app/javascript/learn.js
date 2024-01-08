@@ -1,4 +1,5 @@
 
+
 let click =0;
 let setTimeoutID;
 let instructions = [];
@@ -176,4 +177,3 @@ document.addEventListener('DOMContentLoaded', function() {
         checkAnswear(false);
     });
 });
-

@@ -21,6 +21,9 @@ class UsersController < ApplicationController
       @yes += record.yes
       @no += record.no
     end
+    @mode = params[:mode]
+    @type = params[:type]
+
   end
 
   def update_log
