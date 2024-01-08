@@ -7,7 +7,7 @@ class CreateLearns < ActiveRecord::Migration[7.1]
       t.json :learned
       t.json :inprocess
       t.json :new
-      t.json :stat
+      t.json :data
 
       t.timestamps
     end

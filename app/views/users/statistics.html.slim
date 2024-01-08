@@ -1,15 +1,30 @@
 h1.text-center Statistics
 
 .chart 
-    canvas#myChart width="400" height="200" data-yes="#{@yes}" data-no="#{@no}"
-        
+    canvas#myChart width="200" height="200" data-yes="#{@yes}" data-no="#{@no}"
+    canvas#myChart2 width="200" height="200" data-inporgress="#{@inprocess}" data-new="#{@new}" data-learned="#{@learned}"               
      
-div.justify-content-center.d-flex.gap-2
-    p.fs-3 
-        | No: #{@no}
-    p.fs-3 
-        | Yes: #{@yes}
+div.justify-content-space-bettwen.d-flex
+    div.d-flex.gap-2.justify-content-center style="width:50%"
+        p.fs-3 
+            | No: #{@no}
+        p.fs-3 
+            | Yes: #{@yes}
+    div.d-flex.gap-2.justify-content-center style="width:50%"
+        p.fs-3 
+            | Inprogress: #{@inprocess}
+        p.fs-3 
+            | Learned: #{@learned}
+        p.fs-3 
+            | New: #{@new}
 
+canvas#myChart3  data-stat="#{@logs_json}"
+- @log.each do |letter|
+    div
+        =< letter.id
+        =< letter.yes
+        =< letter.no
+        =< letter.learned_letters
 
 script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js" type="text/javascript"
 = javascript_include_tag "statistics"

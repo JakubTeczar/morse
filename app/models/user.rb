@@ -19,7 +19,7 @@ class User < ApplicationRecord
     # data: {views: 0, current_letters: [], mode: "learn" , generated_pool: [], level: 0}
     # current_letters - litery z których tworzona jest pula
     # generated_pool - pula która została wygenerowana
-    Learn.create!(user_id: self.id, remind: [], learned: [], inprocess: [], new: custom_pool, data: {views: 0, current_letters: [], mode: "learn" , generated_pool: [], level: 0} )
+    Learn.create!(user_id: self.id, remind: [], learned: [], inprocess: [], new: custom_pool, data: {views: 0, current_letters: [], mode_history: ["","",""] , generated_pool: [], level: 0} )
   end
 
   def custom_pool

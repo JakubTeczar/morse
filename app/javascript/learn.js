@@ -54,7 +54,7 @@ function processInstructions(index, instructions) {
 function createInstruction(){
     const morseCode = document.querySelector(".learn-card .morse-code");
     const code = morseCode.dataset.code.split('')
-    const mode = morseCode.dataset.mode;
+    let mode = morseCode.dataset.mode;
     !reverse && document.querySelector(".learn-card").classList.toggle("flip");
 
     let delay = 200; // start delay
@@ -66,18 +66,19 @@ function createInstruction(){
         }else{
             morseCode.textContent = reverse ? morseCode.dataset.letter :morseCode.dataset.code;
         }
-    }else{
-        instructions.push([delay,"break"]);
-
-        code.forEach((char) => {
-            const signal = char === "." ? signalLen : signalLen*3;
-            instructions.push([signal,mode],[signalLen,"break"]);
-        }); 
-        console.log(code,instructions);
-
-        instructions.pop();
-        processInstructions(0, instructions);
     }
+    mode= "sound"
+    instructions.push([delay,"break"]);
+
+    code.forEach((char) => {
+        const signal = char === "." ? signalLen : signalLen*3;
+        instructions.push([signal,mode],[signalLen,"break"]);
+    }); 
+    console.log(code,instructions);
+
+    instructions.pop();
+    processInstructions(0, instructions);
+    
 }
 function loadNewLetter(){
     Rails.ajax({
@@ -156,6 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Rails.ajax({
             url: "/users/update_log",
             type: "PATCH",
+            contentType: "application/json",
             data: answear ? "data=yes" : "data=no",
             success: function() {
                 console.log(answear ? "+1 yes" : "+1 no");
