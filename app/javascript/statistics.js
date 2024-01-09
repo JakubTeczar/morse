@@ -20,14 +20,70 @@
 //   data: myChartData
 // });
 
+const ctx3 = document.getElementById('myChart3');
+const stat= JSON.parse(ctx3.dataset.stat);
+const type= ctx3.dataset.type;
+const mode= ctx3.dataset.mode;
+console.log(stat);
+
+let labels = [];
+let yes = [];
+let no = [];
+let learned_letters = [];
+let dataPieChart;
+
+stat.forEach(el => {
+  const daysOfWeekPolish = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+  const dayOfWeekNamePolish = daysOfWeekPolish[new Date(el.date).getDay()];
+  if(mode=="week"){
+    labels.push(dayOfWeekNamePolish.substring(0, 3))
+  }else{
+    labels.push(el.date.substring(5, 10))
+  }
+  if(type== "progress"){
+    learned_letters.push(el.learned_letters)
+  }else{
+    yes.push(el.yes)
+    no.push(el.no)
+  }
+});
+
+let dataFromServer;
+if(type== "progress"){
+  dataFromServer  = [{ label: 'Learned letters', data: learned_letters,fill: true,borderColor: '#36A2EB',tension: .2}];
+  console.log(dataFromServer);
+}else{
+  dataFromServer  = [{
+    label: 'Yes',
+    data: yes,
+    fill: false,
+    borderColor: '#36A2EB',
+    tension: 0.1
+},{
+    label: 'No',
+    data: no,
+    fill: false,
+    borderColor: 'red',
+    tension: 0.1
+}]
+}
+
 const myChart2 = document.getElementById("myChart2");
 
-const myChartData2 = {
-    labels: [
-        "Inporgress",
-        "Learned",
-        "New",
-    ],
+
+if(type == "responses"){
+  dataPieChart={
+    datasets: [
+      {
+        data: [ myChart2.dataset.yes, myChart2.dataset.no],
+        backgroundColor: [
+          "#36A2EB", //green
+          "#FF546B", //red
+        ]
+      }]
+    };
+}else{
+  dataPieChart={
     datasets: [
         {
             data: [ myChart2.dataset.inporgress, myChart2.dataset.learned, myChart2.dataset.new],
@@ -37,31 +93,25 @@ const myChartData2 = {
                 "#c9cbcf",
             ]
         }]
-};
+    };
+}
 
+Chart.defaults.global.defaultFontSize = 18;
 const pieChart2 = new Chart(myChart2, {
   type: 'doughnut',
-  data: myChartData2
-});
+  data: dataPieChart,
+  options: {
+    plugins: {
+      legend: {
+        labels: {
+          // This more specific font property overrides the global property
+          fontSize: 800
+        }
+      }
+    }
+}});
 
-
-
-Chart.defaults.global.defaultFontSize = 25;
-const ctx3 = document.getElementById('myChart3');
-const stat= JSON.parse(ctx3.dataset.stat);
-console.log(stat);
-
-let labels = [];
-let yes = [];
-let no = [];
-
-stat.forEach(el => {
-    const daysOfWeekPolish = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
-    const dayOfWeekNamePolish = daysOfWeekPolish[new Date(el.date).getDay()];
-    labels.push(dayOfWeekNamePolish)
-    yes.push(el.yes)
-    no.push(el.no)
-});
+// Chart.defaults.global.defaultFontSize = 20;
 
 const data = {
     labels: labels,
@@ -72,19 +122,7 @@ const data = {
         intersect: false,
       },
     },
-    datasets: [{
-        label: 'My First Dataset',
-        data: yes,
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-    },{
-        label: 'My First 2',
-        data: no,
-        fill: false,
-        borderColor: 'rgb(0, 192, 0)',
-        tension: 0.1
-    }],
+    datasets: dataFromServer,
     scales: {
       y: {
         type: 'linear',

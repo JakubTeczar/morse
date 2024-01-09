@@ -6,24 +6,42 @@ class UsersController < ApplicationController
   end
 
   def statistics
+    @mode = params[:mode]
+    @type = params[:type]
+    learn_days = Log.where(user_id: current_user.id).length
     @yes = 0
     @no = 0
-
-    @log = Log.where(user_id: current_user.id)
+    if @mode == "week"
+      @log = Log.where(user_id: current_user.id).last(7)
+      if @log.length < 7
+        dif = 6 - @log.length 
+        for i in 0..dif
+          @log.unshift(Log.new(user_id: current_user.id, date: (Date.today - (7-i)), yes: 0, no: 0,learned_letters: 0))
+        end
+      end
+    else
+      @log = Log.where(user_id: current_user.id).last(31)
+      if @log.length < 31
+        dif = 30 - @log.length 
+        for i in 0..dif
+          @log.unshift(Log.new(user_id: current_user.id, date: (Date.today - (30-i)), yes: 0, no: 0,learned_letters: 0))
+        end
+      end
+    end
     @logs_json = @log.to_json
     learn = Learn.find_by(user_id: current_user.id)
     @learned = learn.learned.length
     @inprocess = learn.inprocess.length
     @new = learn.new.length
     @views = learn.data["views"]
-
+    
     @log.each do |record|
       @yes += record.yes
       @no += record.no
     end
-    @mode = params[:mode]
-    @type = params[:type]
-
+    @average = @learned.to_f / learn_days
+    @predict = (34 - (@learned.to_f / @average)).ceil
+    
   end
 
   def update_log
@@ -88,9 +106,9 @@ class UsersController < ApplicationController
         head :ok
       else
         if params[:data] == "yes"
-          Log.create(user_id: current_user.id, date: Date.today, yes: 1, no: 0)          
+          Log.create(user_id: current_user.id, date: Date.today, yes: 1, no: 0,learned_letters: 0)          
         elsif params[:data] == "no"
-          Log.create(user_id: current_user.id, date: Date.today, yes: 0, no: 1)
+          Log.create(user_id: current_user.id, date: Date.today, yes: 0, no: 1,learned_letters: 0)
         end
         head :ok
       end
