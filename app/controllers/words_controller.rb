@@ -6,6 +6,23 @@ class WordsController < ApplicationController
     @words = Word.all
   end
 
+  def match_letters
+    word = Word.all.sample 
+    @letters = word.word.split("")
+    @codes = word.morse_code.split(" ")
+    @mixCodes = [*@codes]
+    counter = 0
+    
+    begin
+      letter = Letter.all.sample
+      if Letter.all.include?(letter)
+        @mixCodes.push(letter.morse_code)
+        counter += 1
+      end
+    end while counter < 2
+    @mixCodes = @mixCodes.shuffle
+  end
+
   # GET /words/1 or /words/1.json
   def show
   end

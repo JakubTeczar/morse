@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get "users/index"
   get "users/statistics"
+  get "words/match_letters"
   patch "users/update_log"
 
   devise_for :users

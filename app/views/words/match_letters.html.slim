@@ -1,0 +1,19 @@
+h1.text-center Match letters
+.d-flex.gap-3
+    - @letters.each do |el|
+        .border.p-2.border-2.border-dark
+            .bg-light.answear-box style="height:3rem;width:4rem" draggable="true"
+            span = el
+.d-flex.gap-3.codes
+    - @mixCodes.each do |el|
+        .border.p-2.border-2.border-dark.code draggable="true"
+            =el
+
+button#check-answear data-answear="#{@codes}"
+    | Check answear
+div
+    = @mixCodes 
+= @codes
+= @letters
+
+= javascript_include_tag "match_letters"
