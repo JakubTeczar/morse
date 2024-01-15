@@ -2,6 +2,26 @@ const codes = document.querySelectorAll(".code");
 const answearBoxes = document.querySelectorAll(".answear-box");
 const codesBox = document.querySelector(".codes");
 const checkAnswear = document.querySelector("#check-answear");
+const reload = document.querySelector("#reload");
+
+let selected;
+let selectedParent;
+
+reload.addEventListener("click",()=>{
+    Rails.ajax({
+        type: 'GET',
+        url: '/words/match_letters',
+        dataType: 'script',
+        success: function(data) {
+            console.log('Success:',data);
+        },
+        error: function() {
+            console.log('Error: Unable to refresh letter.');
+        }
+    });
+});
+
+
 
 checkAnswear.addEventListener("click",()=>{
     let counter=0;
@@ -24,17 +44,17 @@ checkAnswear.addEventListener("click",()=>{
     }
 });
 
-let selected;
+
 for(morse of codes){
     morse.addEventListener("dragstart",function(e){
         selected = e.target;
+        selectedParent = e.target.parentNode;
     })
 }
 for(box of answearBoxes){
     box.addEventListener("dragstart",function(e){
         this.classList.remove("correct");
         this.classList.remove("wrong");
-        selected = e.target;
     })
     box.addEventListener("dragover",function(e){
         e.preventDefault();
@@ -42,15 +62,26 @@ for(box of answearBoxes){
     box.addEventListener("drop",function(e){
         this.classList.remove("correct");
         this.classList.remove("wrong");
-        this.innerHTML = "";
-        this.appendChild(selected);
-        selected = null;
+        if(selectedParent != this){
+            if(this.textContent != ""){
+                const temp =this.textContent
+                this.querySelector("div").textContent = selected.textContent;
+                selected.textContent = temp;
+                console.log("podmianka tekstu", this);
+            }else{
+                this.appendChild(selected);
+            }
+        }
+
     });
 }
 codesBox.addEventListener("dragover",function(e){
     e.preventDefault();
 });
 codesBox.addEventListener("drop",function(e){
-    this.appendChild(selected);
-    selected = null;
+    if(selected.textContent != ""){
+        this.appendChild(selected);
+        selected = null;
+        selectedParent = null;
+    }
 });

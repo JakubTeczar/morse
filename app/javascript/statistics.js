@@ -96,21 +96,21 @@ if(type == "responses"){
     };
 }
 
-Chart.defaults.global.defaultFontSize = 18;
+Chart.defaults.global.defaultFontSize = 20;
 const pieChart2 = new Chart(myChart2, {
   type: 'doughnut',
   data: dataPieChart,
   options: {
-    plugins: {
-      legend: {
-        labels: {
-          // This more specific font property overrides the global property
-          fontSize: 800
-        }
+    options: {
+      plugins: {
+          subtitle: {
+              display: true,
+              text: 'Custom Chart Subtitle'
+          }
       }
     }
 }});
-
+// myChart2.defaults.font = 400;
 // Chart.defaults.global.defaultFontSize = 20;
 
 const data = {
