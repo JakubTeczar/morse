@@ -1,6 +1,69 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
 
+  def export_to_pdf
+    statistics
+    logs = @log
+    formatted_logs = JSON.pretty_generate(@logs_json)
+    learned = JSON.pretty_generate(@learned)
+    export_date = Date.today.strftime("%Y-%m-%d")
+    dupa = params["dupa"]
+    @pdf = Prawn::Document.new do
+      pdf_height = 792
+      font_families.update(
+        'OpenSans' => {
+          normal: Rails.root.join('app/assets/fonts/OpenSans-Regular.ttf'),
+          bold: Rails.root.join('app/assets/fonts/OpenSans-Bold.ttf'), # Added comma here
+          light: Rails.root.join('app/assets/fonts/OpenSans-Light.ttf')
+        }
+      )
+      image_path = "app/assets/images/tower.png"
+      # stroke_horizontal_rule
+     
+      # header
+      svg IO.read("app/assets/images/header.svg"), at: [-40 , bounds.height + 30], position: :center, width: 620
+      text export_date, align: :right, size: 12, leading: 6, style: :ligh, color: "0000FF" 
+      move_down 10
+      content = []
+      text "History:", style: :bold, size: 30
+      logs.each do |item|
+        content.push([" Date: #{item[:date]}"+" Yes: #{item[:yes]}"+" No: #{item[:no]}"+" Learned Letters: #{item[:learned_letters]}"]);
+        text "Date: #{item[:date]}", style: :bold
+        text "Yes: #{item[:yes]} No:#{item[:no]} Learned Letters: #{item[:learned_letters]}"
+        stroke_horizontal_rule
+        move_down 10
+    end
+      data = [ content.reverse ]
+   
+      text  learned, align: :right, size: 10, leading: 6, style: :light, color: "0000FF"
+      # 10.times do
+      #   text "This is some content for the document.", style: :light
+      # end
+      text "Prawn trying to guess the column widths"
+      move_down 20
+    
+    
+      table(content, position: :center)
+      image Rails.root.join('app/assets/images/tower.png'), position: :center, width: 150
+      10.times do
+        text "This is some content for the document.", style: :light
+      end
+    end
+    send_data(@pdf.render,
+    filename: "Statistics_#{@export_date}.pdf",
+    type: 'application/pdf',
+    disposition: 'inline')
+    # pdf_data = Base64.encode64(@pdf.render)
+    # filename = "Statistics_#{@export_date}.pdf"
+
+    # render json: { pdf_data: pdf_data, filename: filename }
+    
+  end
+  
+  # def statistics_pdf
+
+  # end
+
   def index
     @users = User.all
   end

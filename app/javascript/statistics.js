@@ -1,24 +1,4 @@
-// const myChart = document.getElementById("myChart");
 
-// const myChartData = {
-//     labels: [
-//         "Yes",
-//         "No",
-//     ],
-//     datasets: [
-//     {
-//     data: [ myChart.dataset.yes, myChart.dataset.no],
-//     backgroundColor: [
-//         "#4bc0c0",
-//         "#ff5579",
-//     ]
-//     }]
-// };
-
-// const pieChart = new Chart(myChart, {
-//   type: 'pie',
-//   data: myChartData
-// });
 
 const ctx3 = document.getElementById('myChart3');
 const stat= JSON.parse(ctx3.dataset.stat);
@@ -148,3 +128,39 @@ const config = {
 };
 
 const myChart3 = new Chart(ctx3, config);
+
+// const exportToPdf = document.querySelector(".export_to_pdf");
+// let openPDF = false;
+// exportToPdf.addEventListener('click',function(e){
+  // if (openPDF){
+  //   setTimeout(()=>{
+  //     e.target.click();
+  //   },2000)
+  // }else{
+  //   e.preventDefault();
+  //   e.target.href = updateQueryStringParameter(e.target.href, "dupa", ctx3.dataset.stat);
+  //   openPDF = true;
+  // }
+  // e.preventDefault();
+  // Rails.ajax({
+  //   url: "/users/export_to_pdf",
+  //   type: "GET",
+  //   data:  `dupa=taktak`,
+  //   success: function(data) {
+
+  //   },
+  //   error: function(error) {
+  //     console.error('Error:', error);
+  //   }
+//     function updateQueryStringParameter(uri, key, value) {
+//       var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+//       var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+//       if (uri.match(re)) {
+//         return uri.replace(re, '$1' + key + "=" + value + '$2');
+//       }
+//       else {
+//         return uri + separator + key + "=" + value;
+//       }
+//     }
+// });
+// });

@@ -1,0 +1,17 @@
+
+
+
+.card.fs-1.d-flex.justify-content-between.learn-card.pt-5.pb-4 style="max-width: 60rem"
+    .mt-3
+        .d-flex.gap-3.letters.justify-content-center.fs-3  data-letters="#{@letters}"
+            - @letters.each do |el|
+                .p-2.text-center style="height:7rem"
+                    .answear-box style="min-height:3.6rem;min-width:4rem; box-shadow: inset 0 0 10px #dedede"
+                    span = el
+        .d-flex.gap-3.codes.justify-content-center.mt-2.fs-3
+            - @mixCodes.each do |el|
+                .border-bottom.p-2.border-2.border-dark.code.text-center style="min-width:3rem" draggable="true"
+                    =el
+
+    button#check-answear.btn.btn-primary.mx-auto.fs-4.d-block.mt-5.px-4 data-answear="#{@codes}" 
+        | Check answear

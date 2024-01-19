@@ -1,26 +1,27 @@
+
+
 const codes = document.querySelectorAll(".code");
 const answearBoxes = document.querySelectorAll(".answear-box");
 const codesBox = document.querySelector(".codes");
 const checkAnswear = document.querySelector("#check-answear");
-const reload = document.querySelector("#reload");
+// const reload = document.querySelector("#reload");
 
 let selected;
 let selectedParent;
 
-reload.addEventListener("click",()=>{
-    Rails.ajax({
-        type: 'GET',
-        url: '/words/match_letters',
-        dataType: 'script',
-        success: function(data) {
-            console.log('Success:',data);
-        },
-        error: function() {
-            console.log('Error: Unable to refresh letter.');
-        }
-    });
-});
-
+// reload.addEventListener("click",()=>{
+//     Rails.ajax({
+//         type: 'GET',
+//         url: '/words/match_letters',
+//         dataType: 'script',
+//         success: function(data) {
+//             console.log('Success:',data);
+//         },
+//         error: function() {
+//             console.log('Error: Unable to refresh letter.');
+//         }
+//     });
+// });
 
 
 checkAnswear.addEventListener("click",()=>{
@@ -85,3 +86,26 @@ codesBox.addEventListener("drop",function(e){
         selectedParent = null;
     }
 });
+
+
+
+
+// import { Controller } from "stimulus"
+
+// export default class extends Controller {
+//   connect() {
+//     console.log('Connected to YourController');
+//   }
+
+//   yourTurboEvent() {
+//     console.log('Your Turbo Event');
+//   }
+// }
+
+// document.addEventListener('turbo:submit-end', function() {
+//   console.log('Ajax request completed');
+// });
+
+// document.addEventListener('turbo:load', function() {
+//   console.log('Turbo loaded');
+// });

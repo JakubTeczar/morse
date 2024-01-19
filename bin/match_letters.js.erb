@@ -1,0 +1,12 @@
+var bmfmk ='<%= @letters %>';
+var decodedString = new DOMParser().parseFromString(`<!doctype html><body>${bmfmk}`, 'text/html').body.textContent;
+var resultArray = JSON.parse(decodedString);
+console.log(resultArray);
+
+var bmfmk2 ='<%= @mixCodes %>';
+var decodedString2 = new DOMParser().parseFromString(`<!doctype html><body>${bmfmk2}`, 'text/html').body.textContent;
+var resultArray2 = JSON.parse(decodedString2);
+console.log(resultArray2);
+
+document.querySelector(".codes").dataset.codes = '<%= @letters %>';
+document.querySelector('.letters').dataset.letters = '<%= @mixCodes %>';

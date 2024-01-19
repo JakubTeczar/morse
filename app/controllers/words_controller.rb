@@ -21,6 +21,30 @@ class WordsController < ApplicationController
       end
     end while counter < 2
     @mixCodes = @mixCodes.shuffle
+
+  end
+
+  def match_letters_update
+    word = Word.all.sample 
+    @letters = word.word.split("")
+    @codes = word.morse_code.split(" ")
+    @mixCodes = [*@codes]
+    counter = 0
+    
+    begin
+      letter = Letter.all.sample
+      if Letter.all.include?(letter)
+        @mixCodes.push(letter.morse_code)
+        counter += 1
+      end
+    end while counter < 2
+    @mixCodes = @mixCodes.shuffle
+
+    respond_to do |format|
+      format.turbo_stream
+      headers['Turbo-Frame'] = 'match_letters_frame'
+      format.turbo_stream { render turbo_stream: turbo_stream.replace('match_letters_frame', partial: 'words/new_letters') }
+    end
   end
 
   # GET /words/1 or /words/1.json

@@ -10,9 +10,9 @@ div.d-flex.justify-content-center.text-center.mb-1
 .chart.d-flex.justify-content-center
     canvas#myChart3 data-stat="#{@logs_json}" data-type="#{@type}" data-mode="#{@mode}"
     canvas#myChart2 data-inporgress="#{@inprocess}" data-new="#{@new}" data-learned="#{@learned}" data-no="#{@no}"  data-yes="#{@yes}" 
-                  
+= link_to "Export as PDF", users_export_to_pdf_path , class:"btn btn-dark text-light px-10 d-block export_to_pdf", style:"margin-right:6rem;margin-left:auto;width:9rem"
 .d-flex.justify-content-center.prediction
-    .fs-3.mx-auto.mt-5.d-flex.justify-content-baseline.align-items-baseline.position-relative
+    .fs-3.mx-auto.mt-3.d-flex.justify-content-baseline.align-items-baseline.position-relative
         .header Prediction
         .d-flex style="gap:5px;"
             span To learn all letters, you need 

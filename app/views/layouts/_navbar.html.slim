@@ -11,6 +11,8 @@ nav.navbar.navbar-expand-lg.me-auto
           = link_to "Words", words_path , class: "nav-link active"
         li.nav-item
           = link_to "Free learn", free_learn_letters_path(mode: "text",reverse: "false") , class: "nav-link active"
+        li.nav-item
+          = link_to "Letter match", words_match_letters_path , class: "nav-link active"
         - if user_signed_in?
           - if can? :menage, @user
             li.nav-item
