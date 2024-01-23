@@ -3,11 +3,23 @@ class UsersController < ApplicationController
 
   def export_to_pdf
     statistics
+    
+    require 'base64'
+    require 'stringio'
+    image_data = params[:image_data]
+    theImage = StringIO.new(Base64.decode64(image_data.split(',', 2).last))
+
     logs = @log
     formatted_logs = JSON.pretty_generate(@logs_json)
     learned = JSON.pretty_generate(@learned)
+    inprocess = JSON.pretty_generate(@inprocess)
+    newLen = JSON.pretty_generate(@new)
+    views = JSON.pretty_generate(@views)
+    average = JSON.pretty_generate(@average)
+    predict = JSON.pretty_generate(@predict)
+
     export_date = Date.today.strftime("%Y-%m-%d")
-    dupa = params["dupa"]
+
     @pdf = Prawn::Document.new do
       pdf_height = 792
       font_families.update(
@@ -17,49 +29,110 @@ class UsersController < ApplicationController
           light: Rails.root.join('app/assets/fonts/OpenSans-Light.ttf')
         }
       )
-      image_path = "app/assets/images/tower.png"
       # stroke_horizontal_rule
-     
+  
       # header
       svg IO.read("app/assets/images/header.svg"), at: [-40 , bounds.height + 30], position: :center, width: 620
-      text export_date, align: :right, size: 12, leading: 6, style: :ligh, color: "0000FF" 
+      text export_date, align: :right, size: 12, leading: 6, style: :ligh, color: "0000FF"
       move_down 10
+
+      text "Overall progress", size: 20
+      # text "Learned :"+ learned
+      # text "Inprocess :"+inprocess
+      # text "New :"+newLen
+      # text "Views :"+views
+      # text "Average :"+average
+      # text "Predict :"+predict
+      
+      table_data = [
+        [
+          {content: "Learned:#{learned}\n\nInprocess:#{inprocess}\n\nNew:#{newLen}\n\nViews:#{views}\n\nAverage:#{average}\n\nPredict:#{predict}",
+          size: 12,
+          valign: :center,},
+          {image: theImage,image_width: 450}
+        ]
+      ]
+
+      # Utwórz tabelę i dostosuj jej styl
+      table(table_data, position: :center, column_widths: [80, 450]) do
+        cells.style(border_color: "FFFFFF")  # Ustawienie koloru obramowania na biały (FFFFFF)
+      end
+      move_down 10
+   
       content = []
-      text "History:", style: :bold, size: 30
-      logs.each do |item|
-        content.push([" Date: #{item[:date]}"+" Yes: #{item[:yes]}"+" No: #{item[:no]}"+" Learned Letters: #{item[:learned_letters]}"]);
+      text "History:", style: :bold, size: 22
+      logs.reverse.each do |item|
+        # content.push([" Date: #{item[:date]}"+" Yes: #{item[:yes]}"+" No: #{item[:no]}"+" Learned Letters: #{item[:learned_letters]}"]);
         text "Date: #{item[:date]}", style: :bold
         text "Yes: #{item[:yes]} No:#{item[:no]} Learned Letters: #{item[:learned_letters]}"
         stroke_horizontal_rule
         move_down 10
-    end
-      data = [ content.reverse ]
-   
-      text  learned, align: :right, size: 10, leading: 6, style: :light, color: "0000FF"
-      # 10.times do
-      #   text "This is some content for the document.", style: :light
-      # end
-      text "Prawn trying to guess the column widths"
-      move_down 20
-    
-    
-      table(content, position: :center)
-      image Rails.root.join('app/assets/images/tower.png'), position: :center, width: 150
-      10.times do
-        text "This is some content for the document.", style: :light
       end
+      data = [ content.reverse ]
+      move_down 20
     end
-    send_data(@pdf.render,
-    filename: "Statistics_#{@export_date}.pdf",
-    type: 'application/pdf',
-    disposition: 'inline')
-    # pdf_data = Base64.encode64(@pdf.render)
-    # filename = "Statistics_#{@export_date}.pdf"
 
-    # render json: { pdf_data: pdf_data, filename: filename }
-    
-  end
+    pdf_data = Base64.encode64(@pdf.render)
+    filename = "Statistics_#{@export_date}.pdf"
   
+    render json: { pdf_data: pdf_data, filename: filename }
+  
+  end
+
+  
+  def test_PDF
+    statistics
+    image_data = params[:image_data]
+
+    #PNG nie dziala
+    # image_data_io = StringIO.new(Base64.decode64(image_data))
+    # image_path = "app/assets/images/u8d12iks.png" 
+
+    #działające PNG
+    require 'base64'
+    require 'stringio'
+    theImage = StringIO.new(Base64.decode64(image_data.split(',', 2).last))
+    puts image_data.split(',', 2).last
+
+    #Próba zmiany PNG na JPG
+    # require "mini_magick"
+    # imageG = MiniMagick::Image.open(image_data_io)
+    # imageG.format "png"
+
+    #SVG
+    # svg_data = params[:image_data]
+    # puts svg_data
+
+    @pdf = Prawn::Document.new do
+      svg IO.read("app/assets/images/header.svg"), at: [-40 , bounds.height + 30], position: :center, width: 620
+
+      #SVG
+      # svg StringIO.new(svg_data), width: 500, color: :rgb, fill: '#f3f3f3'
+      #czarnobiałe zdjęcie
+      # image.write "output.png"
+      #Nawet pobrany SVG nie działa 
+      # svg IO.read("app/assets/images/c1x2z1ih.svg"), position: :center, width: 620
+
+      #PNG
+      # require 'base64'
+      image theImage, width: 500
+      # image image_data, width: 200
+      #Prawn::Errors::UnsupportedImageType (image file is an unrecognised format)
+      #PNG pobrany działa
+      # image image_path, width: 200
+    end
+  
+    pdf_data = Base64.encode64(@pdf.render)
+    filename = "Statistics_.pdf"
+
+    # send_data(@pdf.render,
+    #   filename: "Statistics_#{@export_date}.pdf",
+    #   type: 'application/pdf',
+    #   disposition: 'inline')
+  
+    render json: { pdf_data: pdf_data, filename: filename }
+  end
+
   # def statistics_pdf
 
   # end
