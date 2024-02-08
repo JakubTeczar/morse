@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get "users/index"
   get "users/statistics"
+  get "/keyer/index"
   post '/users/export_to_pdf'
   post '/users/test_PDF'
   # config/routes.rb
