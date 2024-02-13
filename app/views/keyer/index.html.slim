@@ -1,8 +1,10 @@
-h1.text-center.d-flex.mx-auto.justify-content-center style="margin-top:70px;color:#0d6efd"
+h1.text-center.d-flex.mx-auto.justify-content-center style="margin-top:40px;color:#0d6efd"
     .letters
     .blur ?
-
-canvas.mx-auto.d-block.border-bottom.border-5.mt-3.pb-4 id="myCanvas" width="750px" height="120px" data-letters="#{@letters}"
+div.position-relative.d-block style="height:150px;margin-bottom:6rem"
+    span.position-absolute.top-50.start-50.translate-middle.bg-black.z-3 style="height:150px;width:2px;"
+    canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-2 id="myCanvas" width="1000px" height="120px" data-letters="#{@letters}"
+    canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-4 id="tutor" width="1000px" height="120px" data-letters="#{@letters}"
 .container 
     #sygnalTime
     #signals
