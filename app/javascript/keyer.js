@@ -1,15 +1,22 @@
   // Pobranie elementu canvas i jego kontekstu
 let canvas = document.getElementById("myCanvas");
+let playButton = document.querySelector(".button-67");
 let tutorCanvas = document.getElementById("tutor");
 
 let ctx = canvas.getContext("2d");
 let toutorCtx = canvas.getContext("2d");
 
 let learningWord = "ale to dobrze dziala";
-
+let currentTime= [];
+let currentElemnt;
+let squareCounter = 0;
+let squareCounterPlayer = 0;
 
 class Square {
-    constructor(canvas,color,player=true) {
+    constructor(canvas,color,player=true,time,id=-1,end=false) {
+        this.id =id;
+        this.time = time;
+        this.end = end;
         this.canvas = player ? canvas : tutorCanvas;
         this.ctx = player ? canvas.getContext("2d") : tutorCanvas.getContext("2d");
         this.size = 7; // Rozmiar kwadratu
@@ -20,6 +27,7 @@ class Square {
         this.speed = 4; // Losowa prędkość przesunięcia w prawo
         this.draw(); // Narysowanie kwadratu przy utworzeniu obiektu
         this.creating
+        this.notTraced = true;
     }
 
     draw() {
@@ -35,11 +43,48 @@ class Square {
 
     update() {
         this.x += this.speed; // Przesunięcie kwadratu w prawo
-        if (this.x > this.canvas) {
-            // Usunięcie kwadratu, jeśli przekroczył prawą krawędź
+
+        if( this.x > ( canvas.width /2 - 100 ) && !this.player && this.notTraced && this.color == "black" && !this.end){
+            this.notTraced = false;
+            currentTime.push({id:this.id,time:this.time});
+        }
+        if( this.x > (  canvas.width /2 + 100 ) && !this.player && this.notTraced && this.color == "black" && this.end){
+            this.notTraced = false;
+            let index = currentTime.findIndex(obj => obj.id === this.id);
+            if(index !== -1){
+                currentTime.splice(index, 1);
+            }
+        }
+        if(this.player && this.notTraced) {
+            console.log(this.end);
+            this.notTraced = false;
+
+            ++squareCounterPlayer;
+            if(!this.end){
+                currentElemnt= [Date.now(),currentTime,this];
+            }else{
+                const duration = Date.now() - currentElemnt[0];
+                if(currentElemnt[1][0] !== null){
+                    let opctions = currentElemnt[1][0];
+                   if(duration < (opctions.time + opctions.time/2) && duration > (opctions.time - opctions.time/2)){
+                        let index = currentTime.findIndex(obj => obj.id === opctions.id);
+                        if(index !== -1){
+                            currentTime.splice(index, 1);
+                        }
+                        currentElemnt[2].color = '#28a745';
+                      
+                   }else{
+                        currentElemnt[2].color = 'red';
+                   }
+                }
+            }
+      
+        }
+
+
+        if (this.x > (canvas.width + 500)) {
             this.remove();
         } else {
-            // Narysowanie kwadratu w nowej pozycji
             this.draw();
         }
     }
@@ -49,7 +94,6 @@ class Square {
         if(this.player){
             squares.splice(squares.indexOf(this), 1);
         }else{
-            console.log("usuniecie tutora");
             tutorSquares.splice(tutorSquares.indexOf(this), 1);
         }
        
@@ -63,11 +107,11 @@ let tutorSquares= [];
 
 
 // Funkcja tworząca i dodająca nowe kwadraty do tablicy
-function createSquare(color,player) {
+function createSquare(color,player,time,id,end) {
     if(player){
-        squares.push(new Square(canvas,color,player));
+        squares.push(new Square(canvas,color,player,0,0,end));
     }else{
-        tutorSquares.push(new Square(tutorCanvas,color,player));
+        tutorSquares.push(new Square(tutorCanvas,color,player,time,id,end));
     }
 
 }
@@ -87,7 +131,7 @@ function animate() {
 }
 
 // Rozpoczęcie animacji
-const signalLen = 200
+const signalLen = 250
 
 animate();
 let block = false;
@@ -108,7 +152,7 @@ const detectLetter = () =>{
     shortSignal = signalLen + signalLen*.5;//+ granica błędu
     signalDecode =[];
     signalsLen.forEach(el => {
-        console.log(el);
+        // console.log(el);
         if(el <= shortSignal){
             signalDecode.push(".");
         }else{
@@ -117,7 +161,7 @@ const detectLetter = () =>{
     });
     
     let text ="";
-    console.log(signalDecode);
+    // console.log(signalDecode);
     signalDecode.forEach((el)=>{
         text += el;
     });
@@ -128,14 +172,14 @@ const detectLetter = () =>{
         return el.morse_code == currentCode;
     });
     if(matchingLetter){
-        console.log(matchingLetter);
+        // console.log(matchingLetter);
         document.querySelector(".blur").textContent = matchingLetter[0].letter;
         document.querySelector(".blur").style.filter = "blur(3px)";
     }
 }
-function startPainting(player,color){
+function startPainting(player,color,time,id){
     if(!player){
-        createSquare(color,player);
+        createSquare(color,player,time,id);
     }else{
         createSquare("#0d6efd",player);
         block = true;
@@ -152,11 +196,11 @@ function startPainting(player,color){
     }
 
 }
-function endPainting(player,color){
+function endPainting(player,color,id){
     if(!player){
-        createSquare(color,player);
+        createSquare(color,player,0,id,true);
     }else{
-        createSquare("white",player);
+        createSquare("white",player,0,0,true);
         block = false;
         oscillator.stop();
         end = Date.now();
@@ -176,10 +220,11 @@ function endPainting(player,color){
 document.addEventListener("keydown", function(event) {
     if (event.code === "Space" && block == false) {
         startPainting(true);
+        playButton.classList.add("button-click");
+      
     }
     if(event.key === "l"){
         clearStat();
-        
     }
     if(event.key === "k"){
         signalsLen = [];
@@ -197,20 +242,22 @@ intervalId = setInterval(()=>{
    }
 },300)
 
+
+
 document.addEventListener("keyup", function(event) {
-    console.log("pusciles");
+    // console.log("pusciles");
     if (block == true) {
         endPainting(true);
+        playButton.classList.remove("button-click");
     }
 });
 
 //run tutor path
 
-
+let instructions = [];
 
 const decodeWord = (word)=>{
     let code = "";
-    let instructions = [];
 
     word.split("").forEach((letter)=>{
         matchingCode = letters.filter(function(el) {
@@ -245,11 +292,12 @@ function processInstructions(index, instructions) {
 
 
 function executeInstruction([time, color]) {
-    console.log(time, color);
+    // console.log(time, color);
+    ++squareCounter;
     return new Promise((resolve) => {
-        startPainting(false,color);
+        startPainting(false,color,time,squareCounter);
         setTimeoutID = setTimeout(() => {
-            endPainting(false,color);
+            endPainting(false,color,squareCounter);
         resolve();
         }, time);
     });
