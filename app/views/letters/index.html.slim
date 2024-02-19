@@ -8,7 +8,7 @@ h1.text-center.mt-2.mb-4 Letters
 #letters
   .row.row-cols-1.row-cols-sm-2.row-cols-md-3.row-cols-xl-6.g-3
     - @letters.each do |letter|
-      .col
+      .col.text-red-700
         == render letter
 
   = link_to "New letter", new_letter_path

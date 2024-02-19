@@ -1,13 +1,24 @@
-h1.text-center.d-flex.mx-auto.justify-content-center style="margin-top:40px;color:#0d6efd"
+.h2.command.text-center 
+    |Transmit a
+
+h1.text-center.d-flex.mx-auto.justify-content-center style="margin-top:40px;color:#0d6efd;height:2rem"
     .letters
     .blur ?
 div.position-relative.d-block style="height:150px;margin-bottom:3rem"
     span.position-absolute.top-50.start-50.translate-middle.bg-black.z-3 style="height:150px;width:2px;"
-    canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-2 id="myCanvas" width="1000px" height="120px" data-letters="#{@letters}"
-    canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-4 id="tutor" width="1000px" height="120px" data-letters="#{@letters}"
-button.button-67 Play
+    canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-2 id="myCanvas" width="400px" height="120px" data-letters="#{@letters}" data-generated-pool="#{@generated_pool}" 
+    canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-4 id="tutor" width="400px" height="120px" 
+button.btn.btn-primary.button-67 Start
+.container
+    div Your current level: V
+    h2 You are Deckhand
+    .progress-bar.border.mx-auto.rounded style="width:100%;height:.8rem;border:2px solid black"
+        .span
+    .bottom-menu
+
 .container style="color:white"
     #sygnalTime
     #signals
     #codes  
+
 = javascript_include_tag "keyer"
