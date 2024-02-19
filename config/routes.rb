@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :letters do
     collection do
       get 'learn' 
+      get 'keyer' 
       get 'free_learn' 
     end
   end

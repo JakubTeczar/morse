@@ -215,7 +215,7 @@ class UsersController < ApplicationController
             learn.learned.delete_if { |item| item["letter"] == generate_letter[0]["letter"] }
             learn.data["current_letters"].delete_if { |item| item["letter"] == generate_letter[0]["letter"] }
 
-            if remind_letter["level"] > 6
+            if remind_letter["level"] > 5
               learn.remind.push(letter)
             else
               learn.inprocess.push(letter)
@@ -225,7 +225,7 @@ class UsersController < ApplicationController
         else
 
           inprocess_letter = learn.inprocess.find { |item| item["letter"] == generate_letter[0]["letter"] }
-          if letter["level"] > 6
+          if letter["level"] > 5
             log.increment!(:learned_letters)
             learn.learned.push(letter)
             learn.inprocess.delete_if { |item| item["letter"] == generate_letter[0]["letter"] }

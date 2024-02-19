@@ -1,21 +1,16 @@
   // Pobranie elementu canvas i jego kontekstu
-  // Pobranie elementu canvas i jego kontekstu
   let canvas = document.getElementById("myCanvas");
   let playButton = document.querySelector(".button-67");
   let tutorCanvas = document.getElementById("tutor");
-  let command = document.querySelector(".command");
-
   
   let ctx = canvas.getContext("2d");
   let toutorCtx = canvas.getContext("2d");
   
-  let learningList = [];
-  let learningIndexList = 0;
+  let learningWord = [];
   let currentTime= [];
   let currentElemnt;
   let squareCounter = 0;
   let squareCounterPlayer = 0;
-  let firstClick = true;
   
   class Square {
       constructor(canvas,color,player=true,time,id=-1,end=false) {
@@ -27,7 +22,7 @@
           this.size = 7; // Rozmiar kwadratu
           this.color = color; 
           this.player = player; 
-          this.x = player ? (canvas.width/2) : 0; // Początkowa pozycja X (lewa krawędź)
+          this.x = player ? 500 : 0; // Początkowa pozycja X (lewa krawędź)
           this.y = player ? (canvas.height - this.size)/2 : (canvas.height - this.size)/4; // Losowa pozycja Y
           this.speed = 4; 
           this.draw(); 
@@ -49,11 +44,11 @@
       update() {
           this.x += this.speed; // Przesunięcie kwadratu w prawo
   
-          if( this.x > ( canvas.width /2 - (canvas.width/10) ) && !this.player && this.notTraced && this.color == "black" && !this.end){
+          if( this.x > ( canvas.width /2 - 100 ) && !this.player && this.notTraced && this.color == "black" && !this.end){
               this.notTraced = false;
               currentTime.push({id:this.id,time:this.time});
           }
-          if( this.x > (  canvas.width /2 + (canvas.width/10) ) && !this.player && this.notTraced && this.color == "black" && this.end){
+          if( this.x > (  canvas.width /2 + 100 ) && !this.player && this.notTraced && this.color == "black" && this.end){
               this.notTraced = false;
               let index = currentTime.findIndex(obj => obj.id === this.id);
               if(index !== -1){
@@ -74,7 +69,7 @@
                      if(duration < (opctions.time + opctions.time/2) && duration > (opctions.time - opctions.time/2)){
                           let index = currentTime.findIndex(obj => obj.id === opctions.id);
                           if(index !== -1){
-                            currentTime.splice(index, 1);
+                              currentTime.splice(index, 1);
                           }
                           currentElemnt[2].color = '#28a745';
                           this.fillSquare(duration,'#28a745');
@@ -101,7 +96,7 @@
   
       fillSquare(duration,color){
           canvas.getContext("2d").fillStyle = color;
-          canvas.getContext("2d").fillRect(( ((canvas.width/2)+this.speed) + (duration/(this.speed*10))),this.y,(duration/this.speed),10);
+          canvas.getContext("2d").fillRect((504 + (duration/(this.speed*10))),this.y,(duration/this.speed),10);
       }
       remove() {
           // Usunięcie kwadratu z tablicy
@@ -145,7 +140,7 @@
   }
   
   // Rozpoczęcie animacji
-  const signalLen = 210
+  const signalLen = 150
   
   animate();
   let block = false;
@@ -154,17 +149,17 @@
   let signalDecode =[];
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   const letters = JSON.parse(canvas.dataset.letters);
+  const currentLetters = JSON.parse(canvas.dataset.generatedpool);
+  currentLetters.forEach((el)=>{
+    learningWord.push(el.letter);
+  });
 
-
-  
-
-  const transmitLetter = document.querySelector(".letters");
   const guessingLetter = document.querySelector(".blur");
   const clearStat = ()=>{
-    //   document.querySelector("#signals").textContent ="";
-    //   document.querySelector("#codes").textContent = '';
-    //   document.querySelector(".letters").textContent = '';
-    //   document.querySelector(".blur").textContent = "";
+      document.querySelector("#signals").textContent ="";
+      document.querySelector("#codes").textContent = '';
+      document.querySelector(".letters").textContent = '';
+      document.querySelector(".blur").textContent = "";
   }
   
   const detectLetter = () =>{
@@ -197,11 +192,10 @@
       });
       if(matchingLetter && matchingLetter[0] != undefined){
           // console.log(matchingLetter);
-          guessingLetter.textContent = matchingLetter[0].letter;
-          guessingLetter.style.filter = "blur(3px)";
+          document.querySelector(".blur").textContent = matchingLetter[0].letter;
+          document.querySelector(".blur").style.filter = "blur(3px)";
       }
   }
-
   function startPainting(player,color,time,id){
       if(!player){
           createSquare(color,player,time,id);
@@ -216,12 +210,11 @@
           oscillator.start();
           start = Date.now();
           intervalId = setInterval(()=>{
-            //   document.querySelector("#sygnalTime").textContent = Date.now() - start;
+              document.querySelector("#sygnalTime").textContent = Date.now() - start;
           },30);
       }
   
   }
-
   function endPainting(player,color,id){
       if(!player){
           createSquare(color,player,0,id,true);
@@ -235,94 +228,69 @@
           signalsLen.forEach((len)=>{
               text += len + " "; 
           })
-        //   document.querySelector("#signals").textContent = text;
+          document.querySelector("#signals").textContent = text;
           clearInterval(intervalId);
-        //   document.querySelector("#sygnalTime").textContent = 0;
+          document.querySelector("#sygnalTime").textContent = 0;
           detectLetter();
       }
     
   }
   
-document.addEventListener("keydown", function(event) {
-    if(!firstClick){
-    if (event.code === "Space" && block == false) {
-        startPainting(true);
-        playButton.classList.add("button-click");
-    }
-    }else{
-        startLearn();
-    }
-    if(event.key === "l"){
-        clearStat();
-    }
-    if(event.key === "k"){
-        signalsLen = [];
-    }
-
-});
-
-function startLearn(){
-    learningList = [];
-    learningIndexList = 0;
-    let generatedPool;
-    if(firstClick){
-        generatedPool = JSON.parse(canvas.dataset.generatedPool);
-        console.log(generatedPool);
-        if(generatedPool[0].letter == undefined){
-            generatedPool = [...generatedPool[0]];
-            console.log("wykonalo sie");
-        }
-        console.log(generatedPool);
-        if(generatedPool[0].letter == undefined){
-            generatedPool = [...generatedPool[0]];
-            console.log("wykonalo sie");
-        }
-    }else{
-        generatedPool = JSON.parse(canvas.dataset.generatedPool.replace(/&quot;/g, '"'));
-    }
+  document.addEventListener("keydown", function(event) {
+      if (event.code === "Space" && block == false) {
+          startPainting(true);
+          playButton.classList.add("button-click");
+        
+      }
+      if(event.key === "l"){
+          clearStat();
+      }
+      if(event.key === "k"){
+          signalsLen = [];
+      }
   
-
-    generatedPool.forEach((el)=>{
-      learningList.push({letters:el.letter,level:el.level});
-    });
-    firstClick = false;
-    playButton.textContent = "Play";
-    processLearn(learningIndexList,learningList);
-}
-
-playButton.addEventListener("pointerdown", function(event) {
-    if(!firstClick){
-        if (block == false) {
-            startPainting(true);
-            playButton.classList.add("button-click");
-        }
-    }else{
-        startLearn();
-    }
-});
-
+  });
+  
+  playButton.addEventListener("mousedown", function(event) {
+      startPainting(true);
+      playButton.classList.add("button-click");
+  });
+  playButton.addEventListener("pointerdown", function(event) {
+      startPainting(true);
+      playButton.classList.add("button-click");
+  });
   
   intervalId = setInterval(()=>{
-    if(Date.now() - end > signalLen*13 && Date.now() - start > signalLen*13 ){
-        transmitLetter.textContent += " ";
-    }
-    if(Date.now() - end > signalLen*5 && Date.now() - start > signalLen*5 ){
-        if(signalsLen.length > 0){
-        transmitLetter.textContent += guessingLetter.textContent;
-        }
-        signalsLen = [];
-        guessingLetter.textContent = "";
+      if(Date.now() - end > signalLen*13 && Date.now() - start > signalLen*13 ){
+          document.querySelector(".letters").textContent += " ";
+      }
+     if(Date.now() - end > signalLen*5 && Date.now() - start > signalLen*5 ){
+          if(signalsLen.length > 0){
+              document.querySelector(".letters").textContent += document.querySelector(".blur").textContent;
+          }
+          signalsLen = [];
+          document.querySelector(".blur").textContent = "";
      }
   },300)
   
-  playButton.addEventListener("pointerup", function(event) {
-        if (block == true) {
-            endPainting(true);
-            playButton.classList.remove("button-click");
-        }
-    }); 
-
+  
+  
   document.addEventListener("keyup", function(event) {
+      // console.log("pusciles");
+      if (block == true) {
+          endPainting(true);
+          playButton.classList.remove("button-click");
+      }
+  });
+  
+  playButton.addEventListener("mouseup", function(event) {
+      // console.log("pusciles");
+      if (block == true) {
+          endPainting(true);
+          playButton.classList.remove("button-click");
+      }
+  });
+  playButton.addEventListener("pointerup", function(event) {
       // console.log("pusciles");
       if (block == true) {
           endPainting(true);
@@ -336,7 +304,6 @@ playButton.addEventListener("pointerdown", function(event) {
   
   const decodeWord = (words)=>{
       let code = "";
-      console.log(words);
       words.forEach((word,index)=>{
           word.split("").forEach((letter)=>{
               matchingCode = letters.filter(function(el) {
@@ -346,26 +313,24 @@ playButton.addEventListener("pointerdown", function(event) {
           });
           if(index !== words.length -1){
           code += "  ";
-        }
+          }
      
       })
-      time = 0;
+  
   
       code.split("").forEach((char) => {
           if(char === " "){
               instructions.push([signalLen*8,"white"]);
-              time += signalLen*8;
           }else{
               const signal = char === "." ? signalLen : signalLen*3;
-              time += signal+signalLen*1.4;
               instructions.push([signal,"black"],[signalLen*1.4,"white"]);
           }
     
       }); 
-      return [instructions,time];
+      return instructions;
   }
   
-  
+  processInstructions(0,decodeWord(learningWord));
   
   function processInstructions(index, instructions) {
       if (index < instructions.length) {
@@ -377,7 +342,7 @@ playButton.addEventListener("pointerdown", function(event) {
       }
   }
   
-
+  
   function executeInstruction([time, color]) {
       // console.log(time, color);
       ++squareCounter;
@@ -390,95 +355,4 @@ playButton.addEventListener("pointerdown", function(event) {
       });
   
   }
-  function checkAnswear(answear){
-    Rails.ajax({
-        url: "/users/update_log",
-        type: "PATCH",
-        contentType: "application/json",
-        data: answear ? "data=yes" : "data=no",
-        success: function() {
-            console.log(answear ? "+1 yes" : "+1 no");
-        },
-        error: function() {
-            console.log("adding answear error");
-        }
-      });
-}
-
-function loadNewLetter(){
-    Rails.ajax({
-    type: 'GET',
-    url: '/keyer/index',
-    dataType: 'script',
-    success: function(data) {
-        console.log('Success:', data);
-        startLearn();
-    },
-    error: function() {
-        console.log('Error: Unable to refresh letter.');
-    }
-    });
-}
-
-  function processLearn(index, letters) {
-    document.querySelector(".line").style.width = (Math.ceil(10 -letters.length + index)*10).toString() + "%";
-    console.log(((Math.ceil(10 -letters.length)-(index + 1))*10).toString());
-      if (index < letters.length) {
-        const currentInstruction = letters[index];
-        executeLearn(currentInstruction).then(() => {
-            console.log(currentInstruction);
-            if(guessingLetter.textContent.trim() == currentInstruction.letters ){
-                checkAnswear("yes");
-                console.log("zgadza sie");
-                ++learningIndexList; 
-            }else{
-                console.log("nie zdagdza sie");
-                if(currentInstruction.level > 3){
-                    checkAnswear("no");
-                    ++learningIndexList; 
-                }
-            }
-       
-            setTimeout(()=>{
-                transmitLetter.textContent = "";
-                guessingLetter.textContent = "";
-                console.log("wywolanie" ,learningIndexList,currentInstruction);
-                processLearn(learningIndexList, letters);
-            },signalLen*2);
-        });
-      }else{
-        loadNewLetter();
-      }
-  }
-
-
-  
-  function executeLearn(learningWord) {
-    instructions = [];
-    return new Promise((resolve) => {
-        console.log(learningWord.level,learningWord.letters);
-        if(learningWord.level > 3){
-            command.textContent = "Transmit " + learningWord.letters;
-        }else{
-            command.textContent = "Follow tutor " + learningWord.letters;
-        }
-        transmitLetter.textContent = "";
-        setTimeout(()=>{
-            if(learningWord.level > 3){
-                setInterval(()=>{
-                    if(transmitLetter.textContent.trim() !== ""){
-                        resolve();
-                    }
-                },200)
-            }else{
-                const [instructions,time] = decodeWord( Array(learningWord.letters));
-                console.log(instructions,time);
-                processInstructions(0,instructions);
-                setTimeout(()=>{
-                    resolve();
-                },(time+signalLen*7));
-            }
-        },signalLen*3);
-    });
-
-  }
+  console.log("to nie działa");

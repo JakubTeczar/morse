@@ -10,6 +10,11 @@ class LettersController < ApplicationController
   def show
   end
 
+  def keyer
+    @letters = Letter.all.select(:letter, :morse_code).to_json
+    learn
+  end
+
   def learn
     learn  = Learn.find_by(user_id: current_user.id)
     current_pool = learn.data["generated_pool"]
@@ -38,6 +43,7 @@ class LettersController < ApplicationController
     @cur = learn.data["current_letters"]
     @learned = learn.learned
     @gen = learn.data["generated_pool"]
+    @gen_letter_json = learn.data["generated_pool"].to_json
     @hist = learn.data["mode_history"]
 
     # if @current["level"] < 3
