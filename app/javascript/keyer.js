@@ -49,11 +49,11 @@
       update() {
           this.x += this.speed; // Przesunięcie kwadratu w prawo
   
-          if( this.x > ( canvas.width /2 - (canvas.width/10) ) && !this.player && this.notTraced && this.color == "black" && !this.end){
+          if( this.x > ( canvas.width /2 - (canvas.width/5) ) && !this.player && this.notTraced && this.color == "black" && !this.end){
               this.notTraced = false;
               currentTime.push({id:this.id,time:this.time});
           }
-          if( this.x > (  canvas.width /2 + (canvas.width/10) ) && !this.player && this.notTraced && this.color == "black" && this.end){
+          if( this.x > (  canvas.width /2 + (canvas.width/5) ) && !this.player && this.notTraced && this.color == "black" && this.end){
               this.notTraced = false;
               let index = currentTime.findIndex(obj => obj.id === this.id);
               if(index !== -1){
@@ -100,15 +100,15 @@
       }
   
       fillSquare(duration,color){
-          canvas.getContext("2d").fillStyle = color;
-          canvas.getContext("2d").fillRect(( ((canvas.width/2)+this.speed) + (duration/(this.speed*10))),this.y,(duration/this.speed),10);
+        canvas.getContext("2d").fillStyle = color;
+        canvas.getContext("2d").fillRect(( ((canvas.width/2)+this.speed) + (duration/(this.speed*10))),this.y,(duration/this.speed),10);
       }
       remove() {
           // Usunięcie kwadratu z tablicy
           if(this.player){
-              squares.splice(squares.indexOf(this), 1);
+            squares.splice(squares.indexOf(this), 1);
           }else{
-              tutorSquares.splice(tutorSquares.indexOf(this), 1);
+            tutorSquares.splice(tutorSquares.indexOf(this), 1);
           }
          
       }
@@ -279,6 +279,7 @@ function startLearn(){
         }
     }else{
         generatedPool = JSON.parse(canvas.dataset.generatedPool.replace(/&quot;/g, '"'));
+        console.log(generatedPool); 
     }
   
 
@@ -352,7 +353,7 @@ playButton.addEventListener("pointerdown", function(event) {
       time = 0;
   
       code.split("").forEach((char) => {
-          if(char === " "){
+          if(char === " "){ 
               instructions.push([signalLen*8,"white"]);
               time += signalLen*8;
           }else{
@@ -420,31 +421,44 @@ function loadNewLetter(){
     });
 }
 
-  function processLearn(index, letters) {
+  function processLearn(index, letters,forceTutor=false) {
     document.querySelector(".line").style.width = (Math.ceil(10 -letters.length + index)*10).toString() + "%";
     console.log(((Math.ceil(10 -letters.length)-(index + 1))*10).toString());
       if (index < letters.length) {
         const currentInstruction = letters[index];
-        executeLearn(currentInstruction).then(() => {
-            console.log(currentInstruction);
-            if(guessingLetter.textContent.trim() == currentInstruction.letters ){
+        executeLearn(currentInstruction,forceTutor).then(() => {
+            console.log(currentInstruction.letters,!forceTutor,transmitLetter.textContent);
+            if(transmitLetter.textContent.trim() == currentInstruction.letters && !forceTutor || guessingLetter.textContent.trim() == currentInstruction.letters && !forceTutor){
                 checkAnswear("yes");
+                transmitLetter.style.color = "green";
                 console.log("zgadza sie");
                 ++learningIndexList; 
             }else{
                 console.log("nie zdagdza sie");
-                if(currentInstruction.level > 3){
+                
+                if(forceTutor){
+                    transmitLetter.style.color = "green";
+                    forceTutor = false;
                     checkAnswear("no");
                     ++learningIndexList; 
+                }else{
+                    transmitLetter.style.color = "red";
+                    if(currentInstruction.level > 4 && !forceTutor){
+                        forceTutor = true;
+                    }
+                   
                 }
+
             }
        
             setTimeout(()=>{
+                
+                transmitLetter.style.color = "#0d6efd";
                 transmitLetter.textContent = "";
                 guessingLetter.textContent = "";
                 console.log("wywolanie" ,learningIndexList,currentInstruction);
-                processLearn(learningIndexList, letters);
-            },signalLen*2);
+                processLearn(learningIndexList, letters,forceTutor);
+            },signalLen*6);
         });
       }else{
         loadNewLetter();
@@ -453,18 +467,18 @@ function loadNewLetter(){
 
 
   
-  function executeLearn(learningWord) {
+  function executeLearn(learningWord,forceTutor) {
     instructions = [];
     return new Promise((resolve) => {
         console.log(learningWord.level,learningWord.letters);
-        if(learningWord.level > 3){
-            command.textContent = "Transmit " + learningWord.letters;
+        if(learningWord.level > 4 && !forceTutor){
+            command.textContent = "Transmit Letter: " + learningWord.letters;
         }else{
-            command.textContent = "Follow tutor " + learningWord.letters;
+            command.textContent = "Follow The Path: " + learningWord.letters;
         }
         transmitLetter.textContent = "";
         setTimeout(()=>{
-            if(learningWord.level > 3){
+            if(learningWord.level > 4 && !forceTutor){
                 setInterval(()=>{
                     if(transmitLetter.textContent.trim() !== ""){
                         resolve();
@@ -478,7 +492,7 @@ function loadNewLetter(){
                     resolve();
                 },(time+signalLen*7));
             }
-        },signalLen*3);
+        },signalLen*2);
     });
 
   }

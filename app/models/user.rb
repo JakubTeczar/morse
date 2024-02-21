@@ -19,191 +19,191 @@ class User < ApplicationRecord
     # data: {views: 0, current_letters: [], mode: "learn" , generated_pool: [], level: 0}
     # current_letters - litery z których tworzona jest pula
     # generated_pool - pula która została wygenerowana
-    Learn.create!(user_id: self.id, remind: [], learned: [], inprocess: [], new: custom_pool, data: {views: 0, current_letters: [], mode_history: ["","",""] , generated_pool: [], level: 0} )
+    Learn.create!(user_id: self.id, remind: [], learned: [], inprocess: [], new: custom_pool, data: {views: 0, current_letters: [], mode_history: ["","",""] , generated_pool: [], level: 1} )
   end
 
   def custom_pool
     # w przyszlosic losowanie rozynch puli liter
     [
       {
-        letter: "a",
-        morse_code: ".-",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "b",
-        morse_code: "-...",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "c",
-        morse_code: "-.-.",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "d",
-        morse_code: "-..",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
         letter: "e",
         morse_code: ".",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "f",
-        morse_code: "..-.",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "g",
-        morse_code: "--.",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "h",
-        morse_code: "....",
-        history: [] ,
+        history: [],
         level: 0,
         view_num: 0
       },
       {
         letter: "i",
         morse_code: "..",
-        history: [] ,
+        history: [],
         level: 0,
         view_num: 0
       },
       {
-        letter: "j",
-        morse_code: ".---",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "k",
-        morse_code: "-.-",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "l",
-        morse_code: ".-..",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "m",
-        morse_code: "--",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "n",
-        morse_code: "-.",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "o",
-        morse_code: "---",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "p",
-        morse_code: ".--.",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "q",
-        morse_code: "--.-",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "r",
-        morse_code: ".-.",
-        history: [] ,
-        level: 0,
-        view_num: 0
-      },
-      {
-        letter: "s",
-        morse_code: "...",
-        history: [] ,
+        letter: "a",
+        morse_code: ".-",
+        history: [],
         level: 0,
         view_num: 0
       },
       {
         letter: "t",
         morse_code: "-",
-        history: [] ,
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "n",
+        morse_code: "-.",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "m",
+        morse_code: "--",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "s",
+        morse_code: "...",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "o",
+        morse_code: "---",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "h",
+        morse_code: "....",
+        history: [],
         level: 0,
         view_num: 0
       },
       {
         letter: "u",
         morse_code: "..-",
-        history: [] ,
+        history: [],
         level: 0,
         view_num: 0
       },
       {
-        letter: "v",
-        morse_code: "...-",
-        history: [] ,
+        letter: "r",
+        morse_code: ".-.",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "d",
+        morse_code: "-..",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "l",
+        morse_code: ".-..",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "f",
+        morse_code: "..-.",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "c",
+        morse_code: "-.-.",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "p",
+        morse_code: ".--.",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "g",
+        morse_code: "--.",
+        history: [],
         level: 0,
         view_num: 0
       },
       {
         letter: "w",
         morse_code: ".--",
-        history: [] ,
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "y",
+        morse_code: "-.--",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "b",
+        morse_code: "-...",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "v",
+        morse_code: "...-",
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "k",
+        morse_code: "-.-",
+        history: [],
         level: 0,
         view_num: 0
       },
       {
         letter: "x",
         morse_code: "-..-",
-        history: [] ,
+        history: [],
         level: 0,
         view_num: 0
       },
       {
-        letter: "y",
-        morse_code: "-.--" ,
-        history: [] ,
+        letter: "j",
+        morse_code: ".---",
+        history: [],
         level: 0,
         view_num: 0
       },
       {
         letter: "z",
         morse_code: "--..",
-        history: [] ,
+        history: [],
+        level: 0,
+        view_num: 0
+      },
+      {
+        letter: "q",
+        morse_code: "--.-",
+        history: [],
         level: 0,
         view_num: 0
       },

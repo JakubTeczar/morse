@@ -5,6 +5,7 @@ class KeyerController < ApplicationController
         learn  = Learn.find_by(user_id: current_user.id)
         current_pool = learn.data["generated_pool"]
         history =  learn.data["mode_history"]
+        history =  learn.data["mode_history"]
         @letter
     
         # sprawdza dwa ostatnio wywołane tryby to nauka czy przypomnienie liter
@@ -18,7 +19,7 @@ class KeyerController < ApplicationController
                 current_pool = create_remind_pool
             else
                 learn.data["mode_history"].push("learn")
-                current_pool = create_learn_pool
+                current_pool = create_learn_pool(learn.data["level"])
                 learn.data["mode_history"] = learn.data["mode_history"].last(3)
             end
           end
@@ -36,8 +37,8 @@ class KeyerController < ApplicationController
         @gen = learn.data["generated_pool"]
         @generated_pool = learn.data["generated_pool"].to_json
         @hist = learn.data["mode_history"]
-        @level = (8 - (learn.new.length / 4).ceil);
-        learn.data["level"] = @level 
+       
+        @level = learn.data["level"]
        
     end
 
@@ -58,13 +59,17 @@ class KeyerController < ApplicationController
         return [pool,pool]
       end
     
-      def create_learn_pool
+      def create_learn_pool(level)
         learn = Learn.find_by(user_id: current_user.id)
         inprocess = learn["inprocess"]
-        pool = []
+        pool = [] 
     
-        if inprocess.length < 3
-          how_many_add = -(inprocess.length) + 5
+        if inprocess.length < 1
+          # how_many_add = -(inprocess.length) + 5
+          # level 1 => 2
+          # level 2-7 => 4
+          # level 8-9 => 5
+          how_many_add = level == 1 ? 2 : level > 7 ? 5 : 4
           newLetters = learn.new.shift(how_many_add)
           pool.push(*newLetters)
           learn.inprocess.push(*newLetters)
@@ -76,7 +81,13 @@ class KeyerController < ApplicationController
         p = inprocess
         p = p.sort_by! { |obj| obj["level"] }
         tab = []
-        tab.push(p[0],p[0],p[0],p[1],p[1],p[1],p[2],p[2],p[2],p[2]).shuffle!
+        if level == 1 
+          tab.push(p[0],p[0],p[0],p[0],p[0],p[1],p[1],p[1],p[1],p[1]).shuffle!
+        elsif level > 7
+          tab.push(p[0],p[0],p[1],p[1],p[2],p[2],p[3],p[3],p[4],p[4]).shuffle!
+        else
+          tab.push(p[0],p[0],p[0],p[1],p[1],p[1],p[2],p[2],p[3],p[3]).shuffle!
+        end
         return [tab,pool]
       end
 end
