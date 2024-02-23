@@ -180,12 +180,54 @@ class UsersController < ApplicationController
     
   end
 
+  def update_log_words
+
+    if current_user
+      puts "LEVEL"
+      puts params[:data][0]
+
+      learn = Learn.find_by(user_id: current_user.id)
+
+      level = params[:data][0]
+      if level == "a"
+        level = learn.data["level"]
+      else
+        level = params[:data][0].to_i
+      end
+      
+
+      
+      learn.data["generated_pool"] = [];
+
+      if params[:data][1..-1] == "yes"
+
+        if learn.data["last_index_words"][level-1] == -1
+          learn.data["last_index_words"][learn.data["level"]-1] = 1
+
+          if learn.data["level_border"] > 10
+            learn.data["level_border"] = learn.data["level_border"] - 4
+          else  
+            learn.data["level_border"] = 9
+          end
+          learn.data["level"]= learn.data["level"]+1
+
+        end
+
+      end
+
+      learn.save
+      head :ok
+    else
+      head :not_found
+    end
+  end  
+
   def update_log
     if current_user
       log = Log.find_by(user_id: current_user.id , date: Date.today)
       if log
         learn = Learn.find_by(user_id: current_user.id)
-        puts "updatae ==#{learn.data}"
+     
         generate_letter = learn.data["generated_pool"].shift(1)
         current_letters = learn.data["current_letters"]
 
@@ -193,17 +235,16 @@ class UsersController < ApplicationController
 
         learn.data["views"] +=1
         letter["view_num"] = learn.data["views"]
-      
-        if params[:data] == "yes"
+
+        if params[:data][1..-1] == "yes"
           log.increment!(:yes)
           letter["level"] += 1
-        elsif params[:data] == "no"
+        elsif params[:data][1..-1] == "no"
           log.increment!(:no)
           if letter["level"] != 0
             letter["level"] -= 1
           end
         end
-
         # co ma się dziać jeśli ostatni tryb to remind albo nauka
         if learn.data["mode_history"][-1] == "remind"
 
@@ -211,7 +252,7 @@ class UsersController < ApplicationController
           remind_letter["level"] = letter["level"]
           remind_letter["view_num"] = learn.data["views"]
 
-          if params[:data] == "no"
+          if params[:data][1..-1] == "no"
             learn.learned.delete_if { |item| item["letter"] == generate_letter[0]["letter"] }
             learn.data["current_letters"].delete_if { |item| item["letter"] == generate_letter[0]["letter"] }
 
@@ -241,9 +282,9 @@ class UsersController < ApplicationController
         learn.save
         head :ok
       else
-        if params[:data] == "yes"
+        if params[:data][1..-1] == "yes"
           Log.create(user_id: current_user.id, date: Date.today, yes: 1, no: 0,learned_letters: 0)          
-        elsif params[:data] == "no"
+        elsif params[:data][1..-1] == "no"
           Log.create(user_id: current_user.id, date: Date.today, yes: 0, no: 1,learned_letters: 0)
         end
         head :ok

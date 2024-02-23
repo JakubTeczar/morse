@@ -21,7 +21,7 @@ nav.navbar.navbar-expand-lg.me-auto
           li.nav-item
             = link_to "Statistics", users_statistics_path(type: "responses",mode: "week"), class: "nav-link active"
           li.nav-item
-            = link_to "Learn", learn_letters_path(mode: "text",reverse: "false") , class: "nav-link active"
+            = link_to "Learn", keyer_index_path(level: "auto") , class: "nav-link active"
           li.nav-item
             = link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link active"
         - else

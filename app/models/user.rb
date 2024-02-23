@@ -19,11 +19,10 @@ class User < ApplicationRecord
     # data: {views: 0, current_letters: [], mode: "learn" , generated_pool: [], level: 0}
     # current_letters - litery z których tworzona jest pula
     # generated_pool - pula która została wygenerowana
-    Learn.create!(user_id: self.id, remind: [], learned: [], inprocess: [], new: custom_pool, data: {views: 0, current_letters: [], mode_history: ["","",""] , generated_pool: [], level: 1} )
+    Learn.create!(user_id: self.id, remind: [], learned: [], inprocess: [], new: letter_pool, data: {views: 0, current_letters: [], mode_history: ["","",""] , generated_pool: [], level: 1, array_len: 0, last_index_words: [-1,-1,-1,-1,-1,-1,-1,-1] , level_border: 35} )
   end
 
-  def custom_pool
-    # w przyszlosic losowanie rozynch puli liter
+  def letter_pool
     [
       {
         letter: "e",

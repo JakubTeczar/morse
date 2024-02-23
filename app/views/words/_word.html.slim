@@ -5,3 +5,8 @@ div.list-group-item.fs-5 id="#{dom_id word}"
   p
     strong Morse code:
     =< word.morse_code
+  p
+    strong level / views:
+    =< word.level 
+    | /
+    =< word.view_num 

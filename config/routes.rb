@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post "words/match_letters"
 
   patch "users/update_log"
+  patch "users/update_log_words"
 
   devise_for :users
 

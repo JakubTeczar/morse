@@ -3,6 +3,7 @@ class Word < ApplicationRecord
 
     def generate_output_text
       self.morse_code = translate_to_morse(self.word)
+      self.view_num = 0
     end
 
     def translate_to_morse(text)
