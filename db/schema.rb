@@ -10,16 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_22_182027) do
-  create_table "histories", force: :cascade do |t|
-    t.integer "id_user"
-    t.date "date"
-    t.integer "yes"
-    t.integer "no"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
+ActiveRecord::Schema[7.1].define(version: 2023_12_26_211900) do
   create_table "learns", force: :cascade do |t|
     t.integer "user_id"
     t.integer "level"
@@ -41,19 +32,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_182027) do
 
   create_table "logs", force: :cascade do |t|
     t.integer "user_id"
-    t.date "date"
-    t.integer "yes"
-    t.integer "no"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "learned_letters"
-  end
-
-  create_table "statistics", force: :cascade do |t|
-    t.integer "id_user"
-    t.json "all"
-    t.json "learn_days"
-    t.integer "learn_level"
+    t.integer "level"
+    t.json "remind"
+    t.json "learned"
+    t.json "inprocess"
+    t.json "new"
+    t.json "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -64,7 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_182027) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "role"
+    t.string "role", default: "standard", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -74,10 +58,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_182027) do
   create_table "words", force: :cascade do |t|
     t.string "word"
     t.string "morse_code"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "level"
     t.integer "view_num"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

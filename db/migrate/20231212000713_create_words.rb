@@ -5,7 +5,6 @@ class CreateWords < ActiveRecord::Migration[7.1]
       t.string :morse_code
       t.integer :level
       t.integer :view_num
-
       t.timestamps
     end
   end
