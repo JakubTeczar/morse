@@ -4,6 +4,10 @@ class LettersController < ApplicationController
   # GET /letters or /letters.json
   def index
     @letters = Letter.all
+    learn  = Learn.find_by(user_id: current_user.id)
+    @un_lock= [*learn.learned].to_json
+    puts "ooooooooooo"
+    puts learn.learned
   end
 
   # GET /letters/1 or /letters/1.json

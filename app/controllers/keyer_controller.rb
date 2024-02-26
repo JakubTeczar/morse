@@ -1,5 +1,8 @@
 class KeyerController < ApplicationController
   def index
+      if user_signed_in?
+      
+
       @letters = Letter.all.select(:letter, :morse_code).to_json
       @level = params[:level]
       learn  = Learn.find_by(user_id: current_user.id)
@@ -80,7 +83,11 @@ class KeyerController < ApplicationController
       @hist = learn.data["mode_history"]
       @un_lock= [*learn.learned].to_json
       @array_len = current_pool[0].length
+      @max_level = learn.data["level"]
       puts learn.data["generated_pool"]
+      else
+        redirect_to "/users/sign_in"
+      end
   end 
 
   def create_remind_pool

@@ -11,6 +11,8 @@ let unLock =[];
 
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+
 let letters = JSON.parse(canvas.dataset.letters);
 
 let generatedPool = JSON.parse(canvas.dataset.generatedPool);
@@ -51,7 +53,6 @@ const detectLetter = () =>{
         text += el;
     });
     currentCode = text;
-    document.querySelector("#codes").textContent = currentCode;
     
     let matchingLetter = letters.filter(function(el) {
         return el.morse_code == currentCode;
@@ -104,11 +105,11 @@ function loadLevel(){
             if((len / divider) > 0){
                 stat.push(`${(len/divider)*100}%`);
                 len-=divider
-            }else{
-                stat.push(`0%`);
             }
         }
     }
+    // document.querySelector(".level-current").style.background = `linear-gradient(90deg, rgba(66,98,108,1) 0%, rgba(66,98,108,1) ${stat[stat.length -1]}, rgba(179,179,179,1) ${stat[stat.length -1]}, rgba(179,179,179,1) 100%)`;
+
     console.log(stat);
 }
 
@@ -132,6 +133,7 @@ function startLearn(){
         isWord = true;
         generatedPool = copy;
     }else{
+        isWord = false;
         if(firstClick){
             if(typeof generatedPool[0].letter == "undefined"){
                 generatedPool = [...generatedPool[0]];
@@ -305,7 +307,7 @@ function processLearn(index, letters,forceTutor=false) {
             }
        
             setTimeout(()=>{
-                transmitLetter.style.color = "#0d6efd";
+                transmitLetter.style.color = "black";
                 transmitLetter.textContent = "";
                 guessingLetter.textContent = "";
                 processLearn(learningIndexList, letters,forceTutor);
@@ -334,25 +336,26 @@ function executeLearn(learningWord,forceTutor) {
                 setInterval(()=>{
                     if( transmitLetter.textContent.trim() != undefined){
                         for(let i = 0 ; i < transmitLetter.textContent.trim().length; i++){
-                            if(learningWord.letters[i].trim() != transmitLetter.textContent.trim()[i]){
+                            if(learningWord.letters[i] != transmitLetter.textContent.trim()[i]){
                                 setTimeout(()=>{
                                     resolve();
-                                },(signalLen*3));
+                                },(signalLen*3+(canvasParameters.extraTime ? signalLen*2 : 0)));
                             }
                         }
+                        if(transmitLetter.textContent.trim() !== "" && learningWord.letters.length <= transmitLetter.textContent.trim().length){
+                            setTimeout(()=>{
+                                resolve();
+                            },(signalLen*3+(canvasParameters.extraTime ? signalLen*2 : 0)));
+                        }
                     }
-                    if(transmitLetter.textContent.trim() !== "" && learningWord.letters.length <= transmitLetter.textContent.trim().length){
-                        setTimeout(()=>{
-                            resolve();
-                        },(signalLen*3));
-                    }
+
                 },300)
             }else{
-                const [instructions,time] = decodeWord( Array(learningWord.letters));
+                const [instructions,time] = decodeWord(Array(learningWord.letters));
                 processInstructions(0,instructions);
                 setTimeout(()=>{
                     resolve();
-                },(time+signalLen*10));
+                },(time+signalLen*10 + (canvasParameters.extraTime ? signalLen*2 : 0)));
             }
         },signalLen*2);
     });

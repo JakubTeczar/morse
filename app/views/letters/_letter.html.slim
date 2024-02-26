@@ -1,11 +1,6 @@
-.card.text-center.card-letters
-  p.card-body 
-    h1 =< letter.letter
-  p
-    div.card-subtitle.fs-4 =< letter.morse_code
-  .btns.row.row-cols-2
-    = button_to "EDYTUJ", edit_letter_path(letter),method: :get, class: "fs-6 btn btn-outline-primary mr-md-3 mb-md-0 mb-2"
-    = button_to "USUŃ", letter_path(letter),method: :delete, class: "fs-6 btn btn-outline-danger mr-md-3 b-md-0 mb-2"
+
+.letter-box.mx-auto
+  p =< letter.letter
 
     
 

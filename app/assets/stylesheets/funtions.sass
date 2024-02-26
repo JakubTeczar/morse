@@ -1,0 +1,21 @@
+$main-color: #42626C
+$sec-color: #678E9B
+
+@mixin mq($key)
+    $size: null
+    @if $key == "fd" 
+        $size: 22em
+    @else if $key == "mb" 
+        $size: 25em
+    @else if $key == "sm" 
+        $size: 43em
+    @else if $key == "md" 
+        $size: 58em
+    @else if $key == "big" 
+        $size: 75em
+    @else if $key == "lg" 
+        $size: 110em
+
+    @if $size != null 
+        @media (min-width: $size) 
+            @content;

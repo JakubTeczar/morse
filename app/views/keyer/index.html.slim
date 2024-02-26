@@ -18,36 +18,49 @@
 /     - @learned.each do |letter|
 /         div 
 /             =< ". #{letter["letter"]} L:#{letter["level"]} V:#{letter["view_num"]} "
+.container.game-container
+    = render 'layouts/banner' 
 
-.h2.command.text-center 
-    |Press start
+    = link_to "", home_index_path, class: "back-link"
 
-h1.text-center.d-flex.mx-auto.justify-content-center style="margin-bottom:15px;color:#0d6efd;height:2rem"
-    .letters
-    .blur 
-div.position-relative.d-block style="height:150px;margin-bottom:3rem"
-    span.position-absolute.top-50.start-50.translate-middle.bg-black.z-3 style="height:150px;width:2px;"
-    canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-2 id="myCanvas" width="400px" height="120px" data-letters="#{@letters}" data-generated-pool="#{@generated_pool}" data-level="#{@level}" data-array-len="#{@array_len}" data-un-lock="#{@un_lock}"
-    canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-4 id="tutor" width="400px" height="120px" 
-button.btn.btn-primary.button-67 Start
-.container.mt-5
-    .level Your current level: #{@level}
-    h2 You are Deckhand
-    .progress-bar.border.rounded style="width:90%;height:.8rem;border:2px solid black"
-        .line style="width:0%;height:.8rem;background:blue;transition:.3s"
-    .bottom-menu
-    .levels.d-flex.mt-2
-        - (1..8).each do |el_level|
-            - if el_level == @level
-                = link_to el_level, keyer_index_path(level: "auto"), class: "box"
-            - else
-                = link_to el_level, keyer_index_path(level: el_level), class: "box"
-                
-.container style="color:white"
-    #sygnalTime
-    #signals
-    #codes  
+    .speaker-settings
 
+    .command.text-center
+        | Press start
+
+    .canvas-text.text-center.d-flex.mx-auto.justify-content-center style="margin-bottom:15px;color:black;height:3rem"
+        .letters
+        .blur 
+    .game-canvas.position-relative.d-block style="height:150px;margin-bottom:3rem"
+        span.position-absolute.top-50.start-50.translate-middle.bg-black.z-3 style="height:150px;width:2px;"
+        canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-2 id="myCanvas" width="400px" height="120px" data-letters="#{@letters}" data-generated-pool="#{@generated_pool}" data-level="#{@level}" data-array-len="#{@array_len}" data-un-lock="#{@un_lock}"
+        canvas.mx-auto.d-block.border-5.mt-3.position-absolute.top-50.start-50.translate-middle.z-4 id="tutor" width="400px" height="120px" 
+    
+    .panel.w-88
+       
+
+        button.play-button.mx-auto.mb-4 Start
+
+        .level Level: #{@level}
+        h2 You are Deckhand
+        .progress-line.rounded.my-3
+            .line.rounded style="width:0%"
+
+        .d-flex
+            .levels.d-flex.justify-content-between
+            
+                - (1..8).each do |el_level|
+                    - if el_level.to_i == @max_level.to_i
+                        = link_to "", keyer_index_path(level: "auto"), class: "level-link level-current"
+                            
+                    - else
+                        - if el_level.to_i < @max_level.to_i
+                            = link_to "", keyer_index_path(level: el_level), class: "level-link level-unlock"
+                        - else  
+                            a.level-link.level-lock
+            = render 'layouts/bottom_desktop_menu' 
+            
+    = render 'layouts/bottom_menu' 
 
 = javascript_include_tag "keyer_canvas"
 = javascript_include_tag "keyer"

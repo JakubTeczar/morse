@@ -1,5 +1,5 @@
 let canvas = document.getElementById("myCanvas");
-let playButton = document.querySelector(".button-67");
+let playButton = document.querySelector(".play-button");
 let tutorCanvas = document.getElementById("tutor");
 let command = document.querySelector(".command");
 
@@ -19,6 +19,8 @@ let start,end,intervalId;
 const signalLen = 210;
 let changeRectColor = true;
 
+let canvasParameters = {speed: 4, height: 10,fillSpeed: 4 ,extraTime:false}
+
 class Square {
     constructor(canvas,color,player=true,time,id=-1,end=false) {
         this.id =id;
@@ -31,7 +33,7 @@ class Square {
         this.player = player; 
         this.x = player ? (canvas.width/2) : 0; // Początkowa pozycja X (lewa krawędź)
         this.y = player ? (canvas.height - this.size)/2 : (canvas.height - this.size)/4; // Losowa pozycja Y
-        this.speed = 4; 
+        this.speed = canvasParameters.speed; 
         this.draw(); 
         this.creating
         this.notTraced = true;
@@ -41,9 +43,9 @@ class Square {
     
         this.ctx.fillStyle = this.color;
         if(this.color == "white"){
-            this.ctx.fillRect(this.x, this.y - 3, 10, 17);
+            this.ctx.fillRect(this.x, this.y - 3, 10, canvasParameters.height + 12);
         }else{
-            this.ctx.fillRect(this.x, this.y , 7, 10);
+            this.ctx.fillRect(this.x, this.y , 7, canvasParameters.height);
         }
 
     }
@@ -104,7 +106,7 @@ class Square {
     fillSquare(duration,color){
         if(changeRectColor){
             canvas.getContext("2d").fillStyle = color;
-            canvas.getContext("2d").fillRect(( ((canvas.width/2)+this.speed) + (duration/(this.speed*10))),this.y,(duration/this.speed),10);
+            canvas.getContext("2d").fillRect(( ((canvas.width/2)+this.speed) + (duration/(this.speed*100))),this.y,(duration/(canvasParameters.fillSpeed)),canvasParameters.height );
         }
     }
 
@@ -129,6 +131,39 @@ function createSquare(color,player,time,id,end) {
 
 }
 
+const mediaQuery = window.matchMedia("(min-width: 1000px)");
+
+function adjustCanvas(viewSize) {
+  
+    if (viewSize.matches) { 
+        canvas.width = 900;
+        tutorCanvas.width = 900;
+        canvas.height = 220;
+        tutorCanvas.height = 220;
+        console.log("rooobie");
+        canvasParameters.speed = 6;
+        canvasParameters.height = 14;
+        canvasParameters.fillSpeed = 6*.4105;
+        canvasParameters.extraTime = true;
+    }else{
+        canvas.width = 400;
+        tutorCanvas.width = 400;
+        canvas.height = 120;
+        tutorCanvas.height = 120;
+        canvasParameters.speed = 4;
+        canvasParameters.height = 10;
+        canvasParameters.fillSpeed = 4;
+        canvasParameters.extraTime = false;
+    }
+}
+
+adjustCanvas(mediaQuery);
+
+mediaQuery.addEventListener("change", function(size) {
+    adjustCanvas(size);
+});
+
+
 function animate() {
     requestAnimationFrame(animate);
 
@@ -144,7 +179,7 @@ function startPainting(player,color,time,id){
 if(!player){
     createSquare(color,player,time,id);
 }else{
-    createSquare("#0d6efd",player);
+    createSquare("black",player);
     block = true;
     oscillator = audioContext.createOscillator();
     oscillator.connect(audioContext.destination);

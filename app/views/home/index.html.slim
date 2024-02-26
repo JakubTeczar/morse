@@ -1,0 +1,51 @@
+.container.home 
+    .nav
+        .brand
+        .d-md-flex.d-none.justify-contetn-end.gap.text-white style="gap:2.25rem"
+            / = link_to "Learn", keyer_index_path(level: "auto"), class: "text-center"
+            / = link_to "Letters", letters_path , class: "text-center"
+            / = link_to "Account", keyer_index_path(level: "auto"), class: "text-center"
+        
+        .log-in.d-flex.align-items-center
+            = link_to "Log in", new_user_session_path, class: ""
+    section.hero-section 
+        .mobile-gif
+
+        .row
+            h1.col-12.col-md-7 
+                span Learn 
+                span Morse Code 
+                span 3x Times More 
+                span Effectively 
+
+                .text
+                    |Take advantage of our learning methods.
+                    br
+                    |You will notice first effect just after one week!
+                .buttons 
+                    = link_to "Why Learn Morse?", "", class: "btn "
+                    = link_to "Get Started", keyer_index_path(level: "auto"), class: "btn "
+        
+            .col-5.d-none.d-md-block   
+                .gif
+
+    / section.why-section 
+    /     h1 Why Learn Morse?  
+    /     .row 
+    /         .col 
+    /             .icon 
+    /             .description
+    /                 |Join the 5% of the population capable of communicating in Morse code
+    /         .col 
+    /             .icon 
+    /             .description
+    /                 |It's a useful skill in emergency situations, and everyone should know the basics of it
+    /         .col 
+    /             .icon 
+    /             .description
+    /                 |Our learning platform is completely free and provides education at multiple skill levels
+
+    / section.fqa 
+    /     h1 Frequently Asked Questions
+
+        

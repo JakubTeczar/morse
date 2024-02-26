@@ -1,0 +1,200 @@
+
+@import "./funtions"
+html
+    @include mq("big") 
+        font-size: 18px
+    @include mq("lg") 
+        font-size: 20px
+    
+.command
+    font-size: 2.2rem
+    font-weight: 600
+    margin-top: 2.6rem
+    @include mq("sm")
+        margin-top: 10vh !important
+        font-size: 2.5rem 
+.panel
+    bottom: 7.5rem
+    position: absolute
+    left: 50%
+    width: 88vw
+    transform: translateX(-50%)
+    @include mq("sm")
+        bottom: 2.5rem
+      
+.levels
+    width: 100%
+    @include mq("sm")
+        width: min-content
+        gap: 1.25rem
+.logo
+    height: 2rem
+    margin-top: .1rem
+    width: 4rem
+    background-size: contain
+    background-repeat: no-repeat
+    background-image: url("./logo.svg")
+
+.game-canvas
+    @include mq("big") 
+        span
+            height: 180px !important
+            width: 3px !important
+
+.speaker-on
+    height: 2rem
+    background-size: contain
+    background-repeat: no-repeat
+    background-image: url("./speaker.svg")
+.speaker-off
+
+.level-link
+    width: 1.7rem
+    height: 1.7rem
+    border-radius: 50%
+    background-position: center
+    background-repeat: no-repeat
+    margin: auto
+    @include mq("sm")
+        margin: 0
+        width: 2rem
+        height: 2rem
+        border-radius: .3rem
+    @include mq("lg")
+        margin: 0
+        width: 3rem
+        height: 3rem
+        border-radius: .7rem
+
+.speaker-settings
+    width: 3rem
+    height: 3rem
+    background-image: url("./speaker.svg")
+    background-size: contain
+    position: absolute
+    top: 2.5rem
+    right: 8rem
+    transition: .1s
+    background-repeat: no-repeat
+    display: none
+    @include mq("md")
+        display: block
+    &:hover  
+        cursor: pointer
+        filter:  brightness(1.35)
+        
+.back-link
+    width: 3.5rem
+    height: 3.25rem
+    background-image: url("./back-icon.svg")
+    background-size: contain
+    position: absolute
+    top: 2.5rem
+    left: 8rem
+    transition: .1s
+    background-repeat: no-repeat
+    display: none
+    @include mq("md")
+        display: block
+    &:hover  
+        filter:  brightness(1.35)
+
+.level-unlock
+    background-image: url("./un-lock.svg")
+    background-size: 55%
+    background-color: $main-color
+    transition: .1s
+    &:hover  
+        filter:  brightness(1.35)
+.level-lock
+    background-image: url("./lock.png")
+    background-size: 40%
+    background-color: #b3b3b3  !important
+.level-current
+    background-image: url("./current-level.png")
+    background-size: 40%
+    position: relative
+    background-color: rgba(#42626C, .7 )
+    transition: .2s
+    transition: .1s
+    &:hover  
+        filter:  brightness(1.25)
+
+.progress-line
+    display: block
+    width: 100%
+    height: .7rem
+    background-color: $main-color
+    box-shadow: inset 0 0 5px #0000005b
+    @include mq("sm")
+        height: 1.1rem
+    .line
+        height: .7rem
+        width: 50%
+        background: #7DB6C7
+        transition: .3s
+        box-shadow: 0px 0px 6px #7DB6C7
+        @include mq("sm")
+            height: 1.1rem
+
+.canvas-text
+    font-size: 2rem
+    font-weight: 600
+.bottom-menu
+    width: 100vw
+    max-width: 130rem
+    position: absolute
+    bottom: 0px
+    left: 0px
+    background-color: $main-color
+    border-top-left-radius: .8rem
+    border-top-right-radius: .8rem
+    display: flex
+    .box
+        flex: 1
+    .icon
+        display: block
+        height: 5.8rem
+        display: grid
+        justify-content: center
+        align-content: end
+        padding-bottom: 1.2rem
+        background-size: contain
+        background-repeat: no-repeat
+        background-position: bottom 2.6rem left 50%
+        background-size: 22%
+        & > a
+            padding-top: 2em 
+    .learn-icon    
+        background-image: url("./learn-icon.svg")
+    .letter-icon  
+        background-image: url("./letter-icon.png")
+        background-size: 25%
+    .account-icon  
+        background-image: url("./account-icon.png")
+
+.desktop-bottom-menu
+    width: 100%
+    justify-content: flex-end
+    padding-right: 1em
+    a
+        padding: 0 1em
+        width: 9rem
+        font-size: 1.2rem
+        color: $main-color
+        position: relative
+    a:not(:last-child)::after
+        position: absolute
+        top: 0px
+        right: 0px
+        content: ""
+        width: 2px
+        height: 100%
+        background: #42626C
+          
+.game-container
+    width: 100vw
+    height: 100vh
+    overflow: hidden
+    max-width: 130rem
+    margin: 0 auto

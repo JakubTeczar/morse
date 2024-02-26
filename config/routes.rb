@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post '/users/test_PDF'
   # config/routes.rb
   get "words/match_letters"
+  get "home/index"
   post "words/match_letters"
 
   patch "users/update_log"
@@ -14,7 +15,10 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :words
-  root to: "letters#index"
+  
+  root to: "keyer#index"
+
+
   get "up" => "rails/health#show", as: :rails_health_check
   resources :letters do
     collection do

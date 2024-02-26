@@ -1,0 +1,139 @@
+@import "./funtions"
+
+.home
+    .nav
+        width: 100% 
+        margin-top: 2.25rem
+        height: 5rem
+        background: rgb(255, 255, 255)
+        border-radius: 2.5rem
+        display: flex
+        align-items: center
+        padding-left: 1.85rem
+        @include mq("md")
+            background: rgb(66,98,108)
+            background: linear-gradient(90deg, rgba(66,98,108,1) 0%, rgba(109,150,163,1) 100%)
+
+        .brand
+            height: 2.9rem
+            background-image: url("./whole-brand.png")
+            background-size: contain
+            background-repeat: no-repeat
+            width: 16.5rem
+            margin-right: 3.5rem
+            display: none
+            @include mq("md")
+                display: block
+        a
+            color: white !important
+
+        .log-in
+            width: 10rem
+            height: calc( 100% - 1rem )
+            background: $main-color
+            margin-left: 1em
+            border-radius: 2.1rem
+            margin-right: .5rem
+            padding-left: 2rem
+            position: relative
+            transition: .2s
+            border: 1px solid $main-color
+            @include mq("md")
+                border: none 
+                margin-left: auto
+            &:hover
+                background: white
+            &:hover > a
+                color: black !important
+            &::before 
+                border: 1px solid $main-color
+                position: absolute
+                content: ""
+                right: 0
+                width: 3.25rem
+                height: 3.25rem
+                background: white
+                background-image: url("./log-in-arrowy.svg")
+                background-repeat: no-repeat
+                background-position: center
+                background-size: 60%
+                border-radius: 50%
+                margin-left: auto
+                margin-right: .5rem
+            a
+                width: 100%
+                line-height: 3rem
+                padding-right: 5rem
+    .hero-section
+        height: 45rem
+        padding-top: 9rem
+        padding-left: 1.9rem
+        @include mq("md")
+            padding-top: 5rem
+        span 
+            display: block
+            font-size: 2.5rem
+            font-weight: 400
+            line-height: 2.9rem
+            @include mq("md")
+                font-size: 4.5rem
+                line-height: 4.9rem
+            &:nth-child(2)
+                color: #7DB6C7
+                font-weight: 300
+            &:nth-child(3)
+                color: #7DB6C7
+                font-weight: 600
+        .text
+            font-size: 1.1rem
+            color: black
+            margin-top: 2rem
+            @include mq("md")
+                margin-top: 2rem
+
+        .buttons
+            gap: .7rem
+            margin-top: 2.5rem
+            display: grid
+            width: 90%
+            @include mq("md")
+                margin-top: 2rem
+                display: flex
+                gap: 1.5rem
+            a
+                display: block
+                font-size: .9rem
+                color: white
+                padding: 0.6rem 1rem
+                background-color: $main-color
+                border-radius: .4rem
+                transition: .2s
+                border: 2px solid $main-color
+                @include mq("md")
+                    padding: 0.94rem 1.9rem
+                &:hover
+                    color: black
+                    background: white
+                    border: 2px solid $main-color
+        .gif
+            background-image: url("./game-play.gif")
+            background-repeat: no-repeat
+            background-size: contain
+            width: 25rem
+            margin-top: 5rem
+            height: 34rem
+        
+
+.mobile-gif
+    height: 9rem
+    width: 100%
+    background-image: url("./logo-mobile.svg")
+    background-repeat: no-repeat
+    background-size: contain
+    background-position: right
+    display: block
+    position: absolute
+    top: 8rem
+    right: 0
+    @include mq("sm")
+        display: none
