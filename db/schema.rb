@@ -37,7 +37,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_26_211900) do
     t.json "learned"
     t.json "inprocess"
     t.json "new"
-    t.json "data"
+    t.json "date"
+    t.integer "learned_letters"
+    t.integer "yes"
+    t.integer "no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
