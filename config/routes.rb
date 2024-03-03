@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   # config/routes.rb
   get "words/match_letters"
   get "home/index"
+  get "/users/account"
   post "words/match_letters"
 
   patch "users/update_log"
@@ -16,7 +17,7 @@ Rails.application.routes.draw do
 
   resources :words
   
-  root to: "keyer#index"
+  root to: redirect('/keyer/index?level=auto')
 
 
   get "up" => "rails/health#show", as: :rails_health_check

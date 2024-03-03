@@ -62,7 +62,7 @@ const options1 = {
     show: false
   }
   },  
-colors: ['#37de4e','#E91E63'],
+colors: ['#3c9ebc','#E91E63'],
 dataLabels: {
   enabled: true
 },
@@ -82,7 +82,7 @@ xaxis: {
 const options2 = {
   series: data2,
   labels: labels2,
-  colors: ['#4287f5','#37de4e','#bdbebf'],
+  colors: ['#E91E63','#3c9ebc','#bdbebf'],
   chart: {
     width: 450,
     type: 'donut',

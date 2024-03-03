@@ -46,7 +46,10 @@ html
     background-size: contain
     background-repeat: no-repeat
     background-image: url("./speaker.svg")
+
 .speaker-off
+    background-size: 300%
+    background-image: url("./speaker-off.svg") !important
 
 .level-link
     width: 1.7rem
@@ -89,13 +92,17 @@ html
     background-image: url("./back-icon.svg")
     background-size: contain
     position: absolute
-    top: 2.5rem
-    left: 8rem
+    top: 4.5rem
+    left: 2rem
     transition: .1s
     background-repeat: no-repeat
     display: none
+    top: 1rem
+    z-index: 6
     @include mq("md")
         display: block
+        top: 2.5rem
+        left: 8rem
     &:hover  
         filter:  brightness(1.35)
 
@@ -178,10 +185,11 @@ html
     justify-content: flex-end
     padding-right: 1em
     a
-        padding: 0 1em
-        width: 9rem
+        padding: 0 .8em
+        width: 9.4rem
         font-size: 1.2rem
         color: $main-color
+        height: min-content
         position: relative
     a:not(:last-child)::after
         position: absolute

@@ -1,39 +1,41 @@
-h2.text-center.h2-stat Statistics
+.container.mt-4  
+    = link_to "", keyer_index_path(level: "auto"), class: "back-link"
+    h2.text-center.h2-stat Statistics
 
-div.d-flex.justify-content-center.text-center.mb-1
-    = link_to "Week", users_statistics_path(type: @type,mode: "week") , class: "link fs-6"+ (@mode == "week" ? " active-link" : "")
-    = link_to "Month", users_statistics_path(type: @type,mode: "month") , class: "link fs-6"+ (@mode == "month" ? " active-link" : "")
-.d-flex.switch-type
-    = link_to "Responses", users_statistics_path(type: "responses",mode: @mode) , class: "link fs-4 .p-2 "+ (@type == "responses" ? " active-type" : "")
-    = link_to "Progress", users_statistics_path(type: "progress",mode: @mode) , class: "link fs-4 .p-2 "+ (@type == "progress" ? " active-type" : "")
+    div.d-flex.justify-content-center.text-center.mb-1
+        = link_to "Week", users_statistics_path(type: @type,mode: "week") , class: "link fs-6"+ (@mode == "week" ? " active-link" : "")
+        = link_to "Month", users_statistics_path(type: @type,mode: "month") , class: "link fs-6"+ (@mode == "month" ? " active-link" : "")
+    .d-flex.switch-type
+        = link_to "Responses", users_statistics_path(type: "responses",mode: @mode) , class: "link fs-4 .p-2 "+ (@type == "responses" ? " active-type" : "")
+        = link_to "Progress", users_statistics_path(type: "progress",mode: @mode) , class: "link fs-4 .p-2 "+ (@type == "progress" ? " active-type" : "")
 
-.chart.d-flex.justify-content-center
-    #myChart1 data-stat="#{@logs_json}" data-type="#{@type}" data-mode="#{@mode}" style="width:60%"
-    #myChart2 data-inporgress="#{@inprocess}" data-new="#{@new}" data-learned="#{@learned}" data-no="#{@no}"  data-yes="#{@yes}" style="margin-top:2em"
-= link_to "Export as PDF", users_export_to_pdf_path , class:"btn btn-dark text-light px-10 d-block export_to_pdf", style:"margin-right:6rem;margin-left:auto;width:9rem"
-.d-flex.justify-content-center.prediction
-    .fs-3.mx-auto.mt-3.d-flex.justify-content-baseline.align-items-baseline.position-relative
-        .header Prediction
-        .d-flex style="gap:5px;"
-            span To learn all letters, you need 
-            strong #{@predict}days more 
-            span if you'll practice
-            u every day
-        i.fs-5.position-absolute.end-0  style="bottom:-2rem"
-            Prediction Based on your statistics*    
-/ div.justify-content-space-bettwen.d-flex
-/     div.d-flex.gap-2.justify-content-center style="width:50%"
-/         p.fs-3 
-/             | No: #{@no}
-/         p.fs-3 
-/             | Yes: #{@yes}
-/     div.d-flex.gap-2.justify-content-center style="width:50%"
-/         p.fs-3 
-/             | Inprogress: #{@inprocess}
-/         p.fs-3 
-/             | Learned: #{@learned}
-/         p.fs-3 
-/             | New: #{@new}
+    .chart.d-flex.justify-content-center
+        #myChart1 data-stat="#{@logs_json}" data-type="#{@type}" data-mode="#{@mode}" style="width:60%"
+        #myChart2 data-inporgress="#{@inprocess}" data-new="#{@new}" data-learned="#{@learned}" data-no="#{@no}"  data-yes="#{@yes}" style="margin-top:2em"
+    = link_to "Export as PDF", users_export_to_pdf_path , class:"btn btn-dark text-light px-10 d-block export_to_pdf", style:"margin-right:6rem;margin-left:auto;width:9rem"
+    .d-flex.justify-content-center.prediction
+        .fs-3.mx-auto.mt-3.d-flex.justify-content-baseline.align-items-baseline.position-relative
+            .header Prediction
+            .d-flex style="gap:5px;"
+                span To learn all letters, you need 
+                strong #{@predict}days more 
+                span if you'll practice
+                u every day
+            i.fs-5.position-absolute.end-0  style="bottom:-2rem"
+                Prediction Based on your statistics*    
+div.justify-content-space-bettwen.d-flex
+    div.d-flex.gap-2.justify-content-center style="width:50%"
+        p.fs-3 
+            | No: #{@no}
+        p.fs-3 
+            | Yes: #{@yes}
+    div.d-flex.gap-2.justify-content-center style="width:50%"
+        p.fs-3 
+            | Inprogress: #{@inprocess}
+        p.fs-3 
+            | Learned: #{@learned}
+        p.fs-3 
+            | New: #{@new}
 
 
 

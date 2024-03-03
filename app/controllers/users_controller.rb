@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
-
   def export_to_pdf
     statistics
     
@@ -140,7 +139,9 @@ class UsersController < ApplicationController
   def index
     @users = User.all
   end
-
+  def account
+    statistics
+  end
   def statistics
     @mode = params[:mode]
     @type = params[:type]
@@ -175,9 +176,15 @@ class UsersController < ApplicationController
       @yes += record.yes
       @no += record.no
     end
-    @average = @learned.to_f / learn_days
-    @predict = (34 - (@learned.to_f / @average)).ceil
-    
+
+    if @learned != 0 
+      @average = @learned.to_f / learn_days
+      @predict = (34 - (@learned.to_f / @average)).ceil
+    else
+      @average = 0 
+      @predict = 34
+    end
+
   end
 
   def update_log_words
@@ -294,4 +301,5 @@ class UsersController < ApplicationController
     end
   end
   
+
 end

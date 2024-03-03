@@ -15,11 +15,20 @@ let squareCounterPlayer = 0;
 let firstClick = true;
 let level = Number(canvas.dataset.level);
 let start,end,intervalId;
+let speakerON = true
 
 const signalLen = 210;
 let changeRectColor = true;
 
 let canvasParameters = {speed: 4, height: 10,fillSpeed: 4 ,extraTime:false}
+
+let speaker = document.querySelector(".speaker-settings");
+
+speaker.addEventListener("click",()=>{
+  speakerON = !speakerON;
+  speaker.classList.toggle("speaker-off");
+});
+console.log(speakerON);
 
 class Square {
     constructor(canvas,color,player=true,time,id=-1,end=false) {
@@ -181,12 +190,14 @@ if(!player){
 }else{
     createSquare("black",player);
     block = true;
-    oscillator = audioContext.createOscillator();
-    oscillator.connect(audioContext.destination);
-    const frequency = 450;
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-    oscillator.type = 'sine';
-    oscillator.start();
+    if(speakerON){
+        oscillator = audioContext.createOscillator();
+        oscillator.connect(audioContext.destination);
+        const frequency = 450;
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+        oscillator.type = 'sine';
+        oscillator.start();
+    }
     start = Date.now();
     intervalId = setInterval(()=>{
         //   document.querySelector("#sygnalTime").textContent = Date.now() - start;
@@ -201,7 +212,9 @@ if(!player){
 }else{
     createSquare("white",player,0,0,true);
     block = false;
-    oscillator.stop();
+    if(speakerON){
+        oscillator.stop();
+    }
     end = Date.now();
     signalsLen.push(end - start);
     text ='';

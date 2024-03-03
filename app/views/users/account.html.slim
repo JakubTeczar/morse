@@ -1,0 +1,26 @@
+.container.mt-4  
+    = link_to "", keyer_index_path(level: "auto"), class: "back-link d-block"
+    .h2.text-center style="font-size:2.3rem;margin-top:2.2em" Statistics
+    br
+    .fs-3.text-center.mt-4
+        | Inprogress: #{@inprocess}
+    .d-flex.gap-2.mx-auto.mt-2.justify-content-center
+        .fs-3.text-center 
+            | Learned: #{@learned}
+    .chart.d-flex.justify-content-center
+        #myChart1 data-stat="#{@logs_json}" data-type="#{@type}" data-mode="#{@week}" style="width:100%;height:16rem"
+   
+    hr
+    = link_to "Log out", destroy_user_session_path, method: :delete, class: "text-center fs-2 mx-auto d-block mt-4"
+
+
+/ - @log.each do |letter|
+/     div
+/         =< letter.id
+/         =< letter.yes
+/         =< letter.no
+/         =< letter.learned_letters
+/ canvas#myChart width="200" height="200" data-yes="#{@yes}" data-no="#{@no}"
+script src="https://cdn.jsdelivr.net/npm/apexcharts" type="text/javascript"
+
+= javascript_include_tag "account"

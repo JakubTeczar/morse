@@ -109,8 +109,19 @@ function loadLevel(){
         }
     }
     // document.querySelector(".level-current").style.background = `linear-gradient(90deg, rgba(66,98,108,1) 0%, rgba(66,98,108,1) ${stat[stat.length -1]}, rgba(179,179,179,1) ${stat[stat.length -1]}, rgba(179,179,179,1) 100%)`;
-
-    console.log(stat);
+    const levelName = document.querySelector(".level-name");
+    if(stat.length == 0){
+        levelName.textContent = "You are Deckhand";
+    }else if(stat.length == 1){
+        levelName.textContent = "You are Young Helmsman";
+    }else if(stat.length == 2){
+        levelName.textContent = "You are Ordinary Seaman";
+    }else if(stat.length == 3){
+        levelName.textContent = "You are Navigator's Assistant";
+    }else{
+        levelName.textContent = "You are Bosun's Mate";
+    }
+    console.log(stat.length);
 }
 
 loadLevel();

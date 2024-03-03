@@ -20,11 +20,13 @@
 
                 .text
                     |Take advantage of our learning methods.
-                    br
-                    |You will notice first effect just after one week!
+                    span class="d-none d-md-block"
+                    |You will notice first effect 
+                    span class="d-md-none d-block"
+                    |just after one week!
                 .buttons 
                     = link_to "Why Learn Morse?", "", class: "btn "
-                    = link_to "Get Started", keyer_index_path(level: "auto"), class: "btn "
+                    = link_to "Get Started", new_user_session_path, class: "btn "
         
             .col-5.d-none.d-md-block   
                 .gif

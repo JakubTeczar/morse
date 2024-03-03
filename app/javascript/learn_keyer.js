@@ -2,6 +2,7 @@
   let canvas = document.getElementById("myCanvas");
   let playButton = document.querySelector(".button-67");
   let tutorCanvas = document.getElementById("tutor");
+  let speakerON = true
   
   let ctx = canvas.getContext("2d");
   let toutorCtx = canvas.getContext("2d");
@@ -141,7 +142,8 @@
   
   // Rozpoczęcie animacji
   const signalLen = 150
-  
+
+
   animate();
   let block = false;
   let start,end,intervalId;
@@ -201,14 +203,17 @@
           createSquare(color,player,time,id);
       }else{
           createSquare("#0d6efd",player);
-          block = true;
-          oscillator = audioContext.createOscillator();
-          oscillator.connect(audioContext.destination);
-          const frequency = 450;
-          oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-          oscillator.type = 'sine';
-          oscillator.start();
-          start = Date.now();
+          if(speakerON){
+            block = true;
+            oscillator = audioContext.createOscillator();
+            oscillator.connect(audioContext.destination);
+            const frequency = 450;
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.type = 'sine';
+            oscillator.start();
+            start = Date.now();
+          }
+    
           intervalId = setInterval(()=>{
               document.querySelector("#sygnalTime").textContent = Date.now() - start;
           },30);
@@ -221,7 +226,9 @@
       }else{
           createSquare("white",player,0,0,true);
           block = false;
-          oscillator.stop();
+          if(speakerON){
+            oscillator.stop();
+          }
           end = Date.now();
           signalsLen.push(end - start);
           text ='';
@@ -235,7 +242,8 @@
       }
     
   }
-  
+
+
   document.addEventListener("keydown", function(event) {
       if (event.code === "Space" && block == false) {
           startPainting(true);

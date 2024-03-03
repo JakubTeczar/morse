@@ -8,7 +8,7 @@ class KeyerController < ApplicationController
       learn  = Learn.find_by(user_id: current_user.id)
       
       if @level.to_i > learn.data["level"]
-        redirect_to "/keyer/index?level=auto"
+        redirect_to keyer_index_path(level: 'auto')
       end
 
       selectedLevel = 0
@@ -86,7 +86,7 @@ class KeyerController < ApplicationController
       @max_level = learn.data["level"]
       puts learn.data["generated_pool"]
       else
-        redirect_to "/users/sign_in"
+        redirect_to "/home/index"
       end
   end 
 
